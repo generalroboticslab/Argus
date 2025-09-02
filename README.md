@@ -7,19 +7,27 @@ This repo includes the code for the Argus robot policy training.
 </div>
 
 ## Installation
-Please install [IsaacGym](https://developer.nvidia.com/isaac-gym/download) and following packages.
-```
+Please install following packages.
+```bash
 conda create --name argus python=3.8
 conda activate argus
 pip install -r requirements.txt --no-cache-dir 
-cd envs
+
+# install isaac gym
+cd .. && git clone https://github.com/boxiXia/isaacgym.git && cd isaacgym/python && pip install -e .
+# alternatively you can directly download isaac gym from official channel:https://developer.nvidia.com/isaac-gym/download
 ```
 
 ## Quick Start!
 Run following checkpoint to check how Argus moves!
 ### Flat ground rolling
 
-`bash run.sh argus_base -pk`
+```bash
+cd ARGUS/envs
+conda activate argus && export LD_LIBRARY_PATH=${CONDA_PREFIX}/lib
+
+bash run.sh argus_base -pk
+```
 
 🎮 Keyboard Controls  
 - ⬆️ `i` → forward (+0.05m/s)  
