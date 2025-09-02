@@ -2,6 +2,9 @@
 ### Project Website: tbd
 
 This repo includes the code for the Argus robot policy training.
+<div align="left">
+    <img src="visualization/Argus_multi-functional.png" width="400">
+</div>
 
 ## Installation
 Please install [IsaacGym](https://developer.nvidia.com/isaac-gym/download) and following packages.
