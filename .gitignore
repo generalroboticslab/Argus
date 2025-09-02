@@ -60,11 +60,9 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# outputs
 outputs
 train_res/
 wandb/
-# checkpoint/
 envs/map/
 runs
 recorded_frames/
@@ -74,10 +72,9 @@ envs/visualization_debug/csv_file/
 envs/checkpoint/
 *events.out.tfevents.*
 envs/debug_real_observation/
-# envs/eval/
-*.vscode/
 +envs/visualization_debug
 envs/real_observation/
 
 *.pyc
 *__pycache__*
+
