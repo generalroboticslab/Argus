@@ -11,7 +11,8 @@ Please install [IsaacGym](https://developer.nvidia.com/isaac-gym/download) and f
 ```
 conda create --name argus python=3.8
 conda activate argus
-pip install -r requirements.txt --no-cache-dir
+pip install -r requirements.txt --no-cache-dir 
+cd envs
 ```
 
 ## Quick Start!
