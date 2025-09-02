@@ -41,7 +41,7 @@ Object tracking: `bash run.sh argus_object_tracking_IL -p`
 
 Object pushing rendering:
 <div align="left">
-    <video src="visualization/object_pushing.mp4" width="640" controls autoplay loop>
+    <video src="https://github.com/generalroboticslab/Argus/blob/main/visualization/object_pushing.mp4" width="640" controls autoplay loop>
     </video>
 </div>
 
