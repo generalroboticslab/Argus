@@ -15,10 +15,9 @@ pip install -r requirements.txt --no-cache-dir
 
 # install isaac gym
 cd .. && git clone https://github.com/boxiXia/isaacgym.git && cd isaacgym/python && pip install -e .
-# alternatively you can directly download isaac gym from official channel:https://developer.nvidia.com/isaac-gym/download
 ```
 
-## Quick Start!
+## Quick Start
 Run following checkpoint to check how Argus moves!
 ### Flat ground rolling
 
