@@ -1,0 +1,1196 @@
+<?xml version="1.0"?>
+<robot  name="argus" >
+ <material  name="color_0" >
+  <color  rgba="0.267004 0.004874 0.329415 1.0" />
+ </material>
+ <material  name="color_1" >
+  <color  rgba="0.280267 0.073417 0.397163 1.0" />
+ </material>
+ <material  name="color_2" >
+  <color  rgba="0.282623 0.140926 0.457517 1.0" />
+ </material>
+ <material  name="color_3" >
+  <color  rgba="0.273006 0.20452 0.501721 1.0" />
+ </material>
+ <material  name="color_4" >
+  <color  rgba="0.253935 0.265254 0.529983 1.0" />
+ </material>
+ <material  name="color_5" >
+  <color  rgba="0.229739 0.322361 0.545706 1.0" />
+ </material>
+ <material  name="color_6" >
+  <color  rgba="0.206756 0.371758 0.553117 1.0" />
+ </material>
+ <material  name="color_7" >
+  <color  rgba="0.183898 0.422383 0.556944 1.0" />
+ </material>
+ <material  name="color_8" >
+  <color  rgba="0.163625 0.471133 0.558148 1.0" />
+ </material>
+ <material  name="color_9" >
+  <color  rgba="0.144759 0.519093 0.556572 1.0" />
+ </material>
+ <material  name="color_10" >
+  <color  rgba="0.127568 0.566949 0.550556 1.0" />
+ </material>
+ <material  name="color_11" >
+  <color  rgba="0.119423 0.611141 0.538982 1.0" />
+ </material>
+ <material  name="color_12" >
+  <color  rgba="0.134692 0.658636 0.517649 1.0" />
+ </material>
+ <material  name="color_13" >
+  <color  rgba="0.185783 0.704891 0.485273 1.0" />
+ </material>
+ <material  name="color_14" >
+  <color  rgba="0.266941 0.748751 0.440573 1.0" />
+ </material>
+ <material  name="color_15" >
+  <color  rgba="0.369214 0.788888 0.382914 1.0" />
+ </material>
+ <material  name="color_16" >
+  <color  rgba="0.477504 0.821444 0.318195 1.0" />
+ </material>
+ <material  name="color_17" >
+  <color  rgba="0.606045 0.850733 0.236712 1.0" />
+ </material>
+ <material  name="color_18" >
+  <color  rgba="0.741388 0.873449 0.149561 1.0" />
+ </material>
+ <material  name="color_19" >
+  <color  rgba="0.876168 0.891125 0.09525 1.0" />
+ </material>
+ <link  name="base_link" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 0" />
+   <geometry >
+    <mesh  scale="1 1 1"  filename="simple_meshes/base_link_inner.stl" />
+   </geometry>
+  </visual>
+  <inertial >
+   <mass  value="17.0" />
+   <origin  rpy="0 0 0"  xyz="0 0 0" />
+   <inertia  ixy="0"  izz="0.95"  iyz="0"  ixx="0.95"  iyy="0.95"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 2.199114857512855"  xyz="0.12515807938595316 0.09093266739736605 0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 -2.827433388230814"  xyz="-0.047806132358776524 0.14713214653662773 0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 -1.5707963267948968"  xyz="-0.15470389405435322 2.6229018956769325e-17 0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 -0.3141592653589795"  xyz="-0.04780613235877656 -0.1471321465366277 0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 0.9424777960769378"  xyz="0.12515807938595314 -0.09093266739736605 0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 2.827433388230814"  xyz="0.047806132358776544 0.1471321465366277 -0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 -2.1991148575128556"  xyz="-0.12515807938595314 0.09093266739736607 -0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 -0.9424777960769383"  xyz="-0.12515807938595316 -0.09093266739736604 -0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 0.3141592653589791"  xyz="0.04780613235877652 -0.14713214653662773 -0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 1.5707963267948966 1.5707963267948966"  xyz="0.15470389405435322 -2.6229018956769325e-17 -0.2503161587719063" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 0.0"  xyz="0.2503161587719063 0.0 0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 1.2566370614359172"  xyz="0.07735194702717663 0.23806481393399379 0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 2.5132741228718345"  xyz="-0.20251002641312976 0.14713214653662776 0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 -2.5132741228718345"  xyz="-0.20251002641312985 -0.1471321465366277 0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 -1.2566370614359175"  xyz="0.07735194702717657 -0.23806481393399379 0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 1.8849555921538759"  xyz="0.27986197344030644 0.09093266739736607 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 3.141592653589793"  xyz="1.7486012637846216e-17 0.29426429307325547 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 -1.884955592153876"  xyz="-0.27986197344030644 0.09093266739736611 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 -0.6283185307179585"  xyz="-0.17296421174472976 -0.23806481393399379 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 0.6283185307179582"  xyz="0.1729642117447297 -0.23806481393399387 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 -1.8849555921538759"  xyz="0.27986197344030644 -0.09093266739736611 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 -0.6283185307179584"  xyz="0.17296421174472973 0.23806481393399379 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 0.6283185307179584"  xyz="-0.1729642117447297 0.2380648139339938 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 1.8849555921538756"  xyz="-0.27986197344030644 -0.09093266739736604 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.1243706856919418 3.141592653589793"  xyz="-5.245803791353865e-17 -0.29426429307325547 0.0" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 -2.5132741228718345"  xyz="0.2025100264131298 0.14713214653662773 -0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 -1.2566370614359175"  xyz="-0.0773519470271766 0.23806481393399379 -0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 -1.2246467991473535e-16"  xyz="-0.2503161587719063 3.065488826148758e-17 -0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 1.256637061435917"  xyz="-0.07735194702717665 -0.23806481393399379 -0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0.0 2.588018294692748 2.5132741228718345"  xyz="0.20251002641312976 -0.1471321465366278 -0.15470389405435322" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.15" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_000_joint" >
+  <parent  link="base_link" />
+  <child  link="link_0" />
+  <origin  rpy="0.2560812873838911 0.7484132745522647 -0.3486364764287584"  xyz="0.31131068016396907 -0.2708169984214946 0.41469122703744177" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_0" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_0" >
+    <color  rgba="0.267004 0.004874 0.329415 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_001_joint" >
+  <parent  link="base_link" />
+  <child  link="link_1" />
+  <origin  rpy="1.6745950986249645 -0.30339235592585045 1.0334984092845394"  xyz="0.5091338643140005 -0.2822439798791367 -0.05784500004908224" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_1" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_1" >
+    <color  rgba="0.280267 0.073417 0.397163 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_002_joint" >
+  <parent  link="base_link" />
+  <child  link="link_2" />
+  <origin  rpy="-0.4752919888728086 1.2648459986345273 0.29765977069441707"  xyz="0.39568052433183937 0.40139258406130757 0.15667136344931318" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_2" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_2" >
+    <color  rgba="0.282623 0.140926 0.457517 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_003_joint" >
+  <parent  link="base_link" />
+  <child  link="link_3" />
+  <origin  rpy="-2.7653596883649247 0.36965379054825753 -1.802532836047789"  xyz="0.2543413712808251 0.14195343351839637 -0.5073309467865406" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_3" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_3" >
+    <color  rgba="0.273006 0.20452 0.501721 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_004_joint" >
+  <parent  link="base_link" />
+  <child  link="link_4" />
+  <origin  rpy="2.0716087597409136 -0.8233786390435652 -0.629021998638416"  xyz="-0.13533722230529846 -0.5361486175024168 -0.19092798697135338" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_4" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_4" >
+    <color  rgba="0.253935 0.265254 0.529983 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_005_joint" >
+  <parent  link="base_link" />
+  <child  link="link_5" />
+  <origin  rpy="1.2579993953354618 -0.9005727107974542 -1.0676840912634364"  xyz="-0.5556621638947914 -0.1447790243963921 0.1118194692823521" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_5" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_5" >
+    <color  rgba="0.229739 0.322361 0.545706 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_006_joint" >
+  <parent  link="base_link" />
+  <child  link="link_6" />
+  <origin  rpy="0.4918066208972323 0.44575494290601103 -0.3260152715994184"  xyz="0.12213912212919925 -0.33290100624799485 0.4652783627943395" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_6" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_6" >
+    <color  rgba="0.206756 0.371758 0.553117 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_007_joint" >
+  <parent  link="base_link" />
+  <child  link="link_7" />
+  <origin  rpy="-2.477966964709886 -0.5691445677403293 0.5632858173573206"  xyz="0.017570563803857974 0.43728733567117745 -0.38819590588930414" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_7" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_7" >
+    <color  rgba="0.183898 0.422383 0.556944 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_008_joint" >
+  <parent  link="base_link" />
+  <child  link="link_8" />
+  <origin  rpy="-2.993243872163657 0.9923627753240294 0.4918624759754986"  xyz="-0.4678578781609889 -0.1525755110294363 -0.3163142729577716" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_8" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_8" >
+    <color  rgba="0.163625 0.471133 0.558148 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_009_joint" >
+  <parent  link="base_link" />
+  <child  link="link_9" />
+  <origin  rpy="-1.843996745840808 0.23616266119250096 -2.2893829244363793"  xyz="0.44833180502730857 -0.34303575827891175 -0.15346029174665124" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_9" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_9" >
+    <color  rgba="0.144759 0.519093 0.556572 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_010_joint" >
+  <parent  link="base_link" />
+  <child  link="link_10" />
+  <origin  rpy="2.433793296350329 -1.222497008707662 1.8094838825588255"  xyz="0.2707851341418164 0.49587021364006584 -0.15170083174575522" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_10" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_10" >
+    <color  rgba="0.127568 0.566949 0.550556 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_011_joint" >
+  <parent  link="base_link" />
+  <child  link="link_11" />
+  <origin  rpy="-2.7875564380162166 0.06430807108971104 -0.28812827769716753"  xyz="0.023821456672915582 0.20447138811202076 -0.5475846871905056" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_11" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_11" >
+    <color  rgba="0.119423 0.611141 0.538982 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_012_joint" >
+  <parent  link="base_link" />
+  <child  link="link_12" />
+  <origin  rpy="-1.2709112486092498 0.8809129680437171 -2.926640400730572"  xyz="-0.01101615230548012 -0.5744617945895919 0.10998768542563302" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_12" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_12" >
+    <color  rgba="0.134692 0.658636 0.517649 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_013_joint" >
+  <parent  link="base_link" />
+  <child  link="link_13" />
+  <origin  rpy="-1.0896235701951764 0.4607985623998494 0.6311977941472939"  xyz="-0.20882210219848912 0.4897014592264495 0.2425094028380956" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_13" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_13" >
+    <color  rgba="0.185783 0.704891 0.485273 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_014_joint" >
+  <parent  link="base_link" />
+  <child  link="link_14" />
+  <origin  rpy="2.8306370289147815 0.37852255931907464 2.568675753277618"  xyz="0.2699821564262483 0.0388400539248135 -0.5175191643046182" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_14" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_14" >
+    <color  rgba="0.266941 0.748751 0.440573 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_015_joint" >
+  <parent  link="base_link" />
+  <child  link="link_15" />
+  <origin  rpy="-0.5750612548951566 -0.7324917346491584 -1.057015056791803"  xyz="0.1157527202734751 0.44227230813058477 0.3649952235442755" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_15" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_15" >
+    <color  rgba="0.369214 0.788888 0.382914 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_016_joint" >
+  <parent  link="base_link" />
+  <child  link="link_16" />
+  <origin  rpy="-0.5562621840636409 0.3346322854813779 -1.914903658370191"  xyz="0.23573778667555986 -0.25780150823033593 0.46924522191224516" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_16" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_16" >
+    <color  rgba="0.477504 0.821444 0.318195 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_017_joint" >
+  <parent  link="base_link" />
+  <child  link="link_17" />
+  <origin  rpy="1.4436947497101675 0.25314032666339203 -0.10346213857068992"  xyz="-0.04145775072530677 -0.5790960948839794 0.07179114008652807" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_17" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_17" >
+    <color  rgba="0.606045 0.850733 0.236712 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_018_joint" >
+  <parent  link="base_link" />
+  <child  link="link_18" />
+  <origin  rpy="1.8603541596969229 -0.6759393305728718 2.420145430017287"  xyz="0.29182624004632546 0.48998227231234703 -0.13030663237170004" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_18" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_18" >
+    <color  rgba="0.741388 0.873449 0.149561 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+ <joint  type="prismatic"  name="actuator_019_joint" >
+  <parent  link="base_link" />
+  <child  link="link_19" />
+  <origin  rpy="-0.759946926444018 -0.4173078191670698 0.9784762370694453"  xyz="-0.4302968509850966 0.08239801995314443 0.38765988487346836" />
+  <axis  xyz="0 0 1" />
+  <limit  lower="-0.105"  effort="375.0"  velocity="2"  upper="0.105" />
+ </joint>
+ <link  name="link_19" >
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+   <material  name="color_19" >
+    <color  rgba="0.876168 0.891125 0.09525 1.0" />
+   </material>
+  </visual>
+  <collision >
+   <origin  rpy="0 0 0"  xyz="0 0 -0.06" />
+   <geometry >
+    <sphere  radius="0.06" />
+   </geometry>
+  </collision>
+  <inertial >
+   <origin  rpy="0 0 0"  xyz="-0.00073 0 0.15817" />
+   <mass  value="0.3" />
+   <inertia  ixy="0"  izz="0.00043"  iyz="0"  ixx="0.0035"  iyy="0.0035"  ixz="0" />
+  </inertial>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="0.021 0.0 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.010499999999999995 0.018186533479473212 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+  <visual >
+   <origin  rpy="0 0 0"  xyz="-0.01050000000000001 -0.018186533479473205 -0.26" />
+   <geometry >
+    <cylinder  radius="0.003"  length="0.3" />
+   </geometry>
+  </visual>
+ </link>
+</robot>

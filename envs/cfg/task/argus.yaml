@@ -1,0 +1,469 @@
+# used to create the object
+name: argus
+
+test: ${..test}
+
+physics_engine: 'physx'
+
+env:
+  numEnvs: ${resolve_default:16384,${...num_envs}}
+  numObservations: "infer" #49 #165 #188
+  numActions: "infer"
+  envSpacing: 1.  # [m]
+  enableDebugVis: false
+  save_blender_trajectory: false
+  export_discrete_terrain: false
+  dataPublisher:
+    enable: false
+    target_url: 'udp://localhost:9870'
+    # keys: [dofPosition]
+  data_root_label: 'sim'
+    # optionally can add:
+    # keys:[name_of_item_to_publish]
+  sim2realDataPublisher:
+    enable: false
+    target_url: 'udp://10.197.149.208:9876'
+    broadcast: false
+
+  dataReceiver:
+    enable: false
+    port: 9871
+    decoding: msgpack
+    broadcast: false
+
+  observationNames:
+    - worldSpaceAngularVelocity
+    # - angularVelocity
+    - commands_xy
+    - dofPosition
+    - dofVelocity
+    - actions
+    # - base_rotation_matrix
+    - base_rotation_matrix_filtered
+    # - ray_point_cloud
+  max_observation_delay_steps: 0
+  num_stacked_obs_frame: 3
+  num_stacked_state_frame: 3
+  asymmetric_observations: True
+  stateNames: 
+    - linearVelocity # in world space!
+    - worldSpaceAngularVelocity
+    # - angularVelocity
+    - projectedGravity
+    - commands_xy
+    - dofPosition
+    - dofVelocity
+    - actions
+    - contact
+    - base_rotation_matrix
+  
+
+  perception_asymmetry_experiment:
+    enable: false
+    data_collection: false
+  objectTracking: 
+    enable: false
+    objectRobotInitialDistance: 1.5 # [m] initial distance between the robot and the object
+    cube_size: 1 # [m] size of the cube object
+    velocity_range: [0.4,0.8]
+    distance_reset_threshold: 2.5 # if True, the robot will be reset to a random position within the distance from the object
+
+  objectPushing: 
+    enable: false
+    cube_y_position: 2 # [m] initial distance between the robot and the object
+    cube_size: 1 # [m] size of the cube object
+    goal_vel: 0.6
+
+
+  ray_obs:
+    static_debug: false
+    enable: false
+    ray_distance_to_pixel: true # if True, the ray point cloud is in pixel space, otherwise in world space
+    apply_tof_noise: false
+    point_history_length: 3 # number of frames to stack in the ray point cloud === no need if use num_stacked_obs_frame
+    num_perception_units: 20 # number of perception units to use
+    visualize_ray_point_cloud: false
+    max_distance: 2.5 # [m] maximum distance of the ray point cloud
+    resolution: [5,5]
+    random_vel: false
+    random_dropout: 0.2
+    random_noise: 0.005
+    apply_noise_on_point_cloud: True
+    num_step_to_delay_ray: 1
+
+  terrain:
+    terrainType: plane # {none, plane, trimesh,heightfield}
+    staticFriction: 0.7  # [-]
+    dynamicFriction: 0.7  # [-]
+    restitution: 0.        # [-]
+    # rough terrain only:
+    curriculum: True
+    mapLength: 10.
+    mapWidth: 10.
+    numLevels: 10
+    minInitMapLevel: 0
+    maxInitMapLevel: 10
+    difficultySale: 1 # multiplier for terrain height
+    numTerrains: 60
+    # terrain types: [rough_up, rough_down, rough_flat, stair_up, stair_down, smooth_up, smooth_down, discrete, stepping_stone]
+    terrainProportions: [0,0,0,0,0,0,0,1,0]
+    stair: # stairs up/down terrain
+      width: 0.4
+      height: 0.12
+    uniform: # uniform terrain
+      height: 0.12
+      step: 0.005
+      downsampled_scale: 0.2
+    discrete: # discrete obstable terrain
+      height: 0.12
+      size: [0.4, 2.0]
+      num_rects: 100
+    platformSize: 2.0 # [m]
+    horizontalScale: 0.05
+    verticalScale: 0.001
+    borderSize: 25
+    # slope: 0.4 # corresponds to 20deg slope (tan(20deg) = 0.4)
+    slope: 0.268 # corresponds to 15deg slope (tan(15deg) = 0.268)
+    # tri mesh only:
+    slopeTreshold: 0.5
+
+  baseInitState:
+    pos: [0.0, 0.0, 0.25] # x,y,z [m]
+    rot: [0.0, 0.0, 0.0, 1.0] # x,y,z,w [quat]
+    vLinear: [0.0, 0.0, 0.0]  # x,y,z [m/s]
+    vAngular: [0.0, 0.0, 0.0]  # x,y,z [rad/s]
+  baseHeightOffset: 0.05 # [m] offset added to the base pos z
+  baseHeightTarget: # 0.3 # target base height [m]
+
+  randomCommandVelocityRanges:
+    # train
+    linear_x: [-1,1] # min max [m/s]
+    linear_y: [-1,1]   # min max [m/s]
+    # linear_x: [1,1] # min max [m/s]
+    # linear_y: [0,0]   # min max [m/s]
+    yaw: [0,0]    # min max [rad] yaw angle dirvergence
+  commandZeroProbability: 0 # additional probability to set a zero command
+  commandZeroThreshold: 0.05 # [m/s] treat commends below this threshold as zero
+  keep_still_at_zero_command: true
+
+  motor_type: robstride_02
+
+  control:
+    # PD Drive parameters:
+    stiffness: 2000  # [N/m]
+    damping: 100    # [N/m]
+    integral: 200  # set smaller integral to avoid overshoot at lower stiffness. tune it to match the real robot
+    limit: 375        # [N]
+    # action scale: target angle = actionScale * action + defaultAngle
+    actionScale: 0.25
+    # decimation: Number of control action updates @ sim DT per policy DT
+    decimation: 4
+  # controlFrequencyInv: 1 # Number of control action updates @ sim DT per policy DT
+  clipActions: 1.0
+  # defaultJointPositions
+  # desiredJointPositions:
+  # initialJointPositions: -0.105
+
+  urdfAsset:
+    collision_filter: 1
+    AssetOptions:
+      collapse_fixed_joints: true
+      fix_base_link: false
+      default_dof_drive_mode: 3 # see DofDriveMode (0: DOF_MODE_NONE, 1: DOF_MODE_POS, 2: DOF_MODE_VEL, 3: DOF_MODE_EFFORT)
+      flip_visual_attachments: false
+      replace_cylinder_with_capsule: true
+      vhacd_enabled: false
+      override_inertia: false
+      use_physx_armature: true
+      enable_gyroscopic_forces: true
+      vhacd_params:
+        max_convex_hulls: 3
+        max_num_vertices_per_ch: 16
+    # root: "" # override defualt asset_root
+    file: "urdf/argus/argus_dof20_minimum.urdf"
+    cube_asset: "urdf/cube/track_cube_s100cm_d20.urdf"
+    asymmetry_design_asset: "urdf/argus_sim_rand_joint/sim_rand_joint_0047_argus_dof20_minimum.urdf"
+
+    # baseName: base
+    # hipName: body_1
+    ## shank if collapsing fixed joint, foot otherwise
+    # kneeName: body_1 # there is no knee
+    # footName: body_2
+    # # joint
+    # hipJointName: [joint_1_0,joint_1_1,joint_1_2,joint_1_3]
+  assetDofProperties: # set_actor_dof_properties (override)
+    damping: 10
+    effort: 375
+    friction: 0.0
+
+  heightmap:
+    x:  
+      start: -0.6
+      end: 0.6
+      num: 6
+    y:  
+      start: -0.6
+      end: 0.6
+      num: 6
+    # x: "${linspace: -0.6, 0.6, 13}"
+    # y: "${linspace: -0.4, 0.4, 9}"
+  
+  randomize:
+    friction:
+      enable: true
+      range: [0.1, 0.5]
+    baseMass:
+      enable: true
+      range: [-0.5, 0.5]
+    baseInertiaOrigin:
+      enable: true
+      range: [[-0.05, 0.05], [-0.05, 0.05], [-0.05, 0.05]]
+    push:
+      enable: true
+      enable_at_reset: false
+      interval_s: 10
+      velMin: [-1,-4, -1, -1, -1, -1]
+      velMax: [ 1, 0, 1, 1, 1, 1]
+    initDofPos: # randomize dof position at reset
+      enable: true
+      range: [-0.1, 0.1]
+    initDofVel: # randomize dof velocity at reset
+      enable: true
+      range: [-0.1, 0.1]
+    erfi: # extended random force injection
+      enable: false
+      rfi_range: [-2.0, 2.0] # random force injection
+      rao_range: [-1.0, 1.0] # random actuation offset
+    dof_strength:
+      enable: true
+      range: [0.98, 1.02]
+    control_pd:
+      enable: true
+      stiffness_range: [0.9, 1.1]
+      damping_range: [0.9, 1.1]
+    dof_disable:
+      enable: false
+      probability: 0.1
+      curriculum:
+        enable: false
+        num_step: 1e5 # number of steps to reach the final probability
+    default_dof_pos:
+      enable: false
+      range: [-0.01, 0.01]
+    link_mass:
+      enable: true
+      range: [0.95, 1.05]
+    link_inertia:
+      enable: true
+      range: [0.95, 1.05]
+    body_force:
+      enable: true
+      scale: 0.05
+      prob_range: [0.001, 0.1]
+      decay_time_constant: 0.2 # [s]
+    action_delay:
+      enable: true
+      range: [0.1,0.5]
+      # range: [0.5,0.8]
+    projected_gravity_delay:
+      enable: false
+      range: [0.05,0.5] # [0-1], 0 is no delay
+    orientation_delay:
+      enable: true
+      range: [0.5,0.95] # [0-1], 0 is no delay
+    base_init_pos:
+      enable: true
+      range: [[-1,1], [-1,1], [0, 0]] # x,y,z [m]
+    base_init_orientation: # randomize base orientation at reset
+      enable: true
+
+  learn:
+    lin_vel_curriculum: false
+    adaptive_linvel: false
+    foot_contact_threshold: 5
+    allowKneeContacts: True
+    terminalReward: 0.0
+    no_negative_reward: True
+    reward:
+      lin_vel:
+        scale: 1.0
+        fcn: exp_weighted_square_sum
+        exp_scale: -5.0
+        normalize_by: [1, 1, 0.1]
+      lin_vel_mse:
+        scale: 0.0
+      ang_vel:
+        scale: 0.0
+        fcn: exp_weighted_square_sum
+        exp_scale: -4.0
+        normalize_by: [0.1, 0.1, 1] # [0.2, 0.2, 1]
+      orientation:
+        scale: 0.0
+        fcn: square_sum
+      orientation_along_command_direction:
+        scale: 0.0
+      dof_force_target:
+        scale: 0.4
+        exp_scale: -0.1
+        bound_ratio: 0.3
+        fcn: out_of_bound_exp_square_sum #out_of_bound_abs_sum
+      dof_acc:
+        scale: +0
+        exp_scale: -1.0
+        fcn: exp_square_sum
+      dof_vel:
+        scale: 0.1
+        exp_scale: -0.2
+        fcn: exp_square_sum
+      dof_vel_computed:
+        scale: -0.0
+      dof_acc_computed:
+        scale: -0.0
+      dof_pos:
+        scale: 0
+        exp_scale: -4.0
+        fcn: exp_square_sum
+      dof_pow:
+        scale: 0
+        fcn: abs_mean
+      dof_limit: # TODO
+        scale: -1.0
+        fcn: out_of_bound_square_sum
+        margin: 0.05
+      base_height:
+        scale: 0
+        exp_scale: -20.0
+        fcn: # reverse_bell
+      air_time:
+        scale:  0.0
+        fcn: duration_since_condition_reward
+        offset: -0.5 # [s]
+      # feetAirTimeMin_s: 0.3 # [s]
+      stance_time:
+        scale: -0.0
+        fcn: duration_since_condition_reward
+        offset: -0.5 # [s]
+      # feetStanceTimeMin_s: 0.3 # [s]
+      single_contact:
+        scale:  0 # 0.1
+        fcn: duration_within_period_reward
+        max_single_contact: 1 # max num of feet contact that is considered as single contact
+        grace_period: 0.2 # [s] grace period for overlapping contacts
+      contact_force:
+        scale: 0.0
+        fcn: contact_force_reward
+        offset: -100 # [N]
+      # footContactForceLimit: 100 #[N]
+      should_contact:
+        scale: 0.0
+        fcn: sum
+      foot_height:
+        scale: 0.0
+        clamp_max: 0.1
+        fcn: foot_height_reward
+      foot_pos:
+        scale: 0
+        exp_scale: -5
+        normalize_by: [0, 1, 0]
+        # fcn: exp_square_sum
+      foot_orientation:
+        scale: 0
+        exp_scale: -5.0
+        fcn: exp_square_sum_mean
+      foot_forward:
+        scale: 0
+        exp_scale: -5
+        fcn: foot_forward_fcn
+      impact:
+        scale: -0.01
+        # exp_scale: -0.00001
+        fcn: abs_sum
+      # stumble:
+      #   scale: -0. #-2.0
+      #   fcn: sum
+      slip:
+        scale: -0.01
+        fcn: slip_reward
+      collision:
+        scale: -0
+        fcn: sum
+      action:
+        scale: 0.2
+        exp_scale: -0.2
+        fcn: out_of_bound_exp_square_sum
+      action_rate:
+        scale: 0.2
+        exp_scale: -2e-4
+        fcn: exp_square_sum
+      # torque_limit_reset:
+      #   scale: -0
+      dof_absolute_position:
+        scale: -0
+      robot_object_distance: #for object pushing
+        scale: 0.0 #0.1
+        exp_scale: -2.0
+    # normalization
+    linearVelocityScale: 2.0
+    angularVelocityScale: 0.25
+    dofPositionScale: 1.0
+    dofVelocityScale: 0.05
+    heightMapScale: 5.0
+
+    # joint limit [rad]
+    dofLimitMargins: 0
+    # dofLimitScale: 0
+
+    # noise 
+    addNoise: False
+    noiseLevel: 1.0 # scales other values
+    dofPositionNoise: 0.005
+    dofVelocityNoise: 0.2
+    linearVelocityNoise: 0.1
+    angularVelocityNoise: 0.2
+    gravityNoise: 0.05
+    heightMapNoise: 0.06
+    
+    # episode length in seconds
+    episodeLength_s: 20
+
+  # viewer cam:
+  viewer:
+    sync: True # set to False to freeze the viewer
+    refEnv: 0
+    pos: [0, 0, 10]  # [m]
+    lookat: [1., 1, 9]  # [m]
+    follow: True
+    keyboardOperator: False
+    follower_offset: [-1.5, -1.5, 0.4]
+
+  # set to True if you use camera sensors in the environment
+  camera_sensor:
+    enable: False
+    size: [32,32]
+    visualize: False
+    horizontal_fov: 140
+    on_foot: False
+
+sim:
+  dt: 0.005
+  substeps: 1
+  up_axis: "z"
+  use_gpu_pipeline: ${eq:${...pipeline},"gpu"}
+  gravity: [0.0, 0.0, -9.81]
+  physx:
+    num_threads: ${....num_threads}
+    solver_type: ${....solver_type}
+    use_gpu: ${contains:"cuda",${....sim_device}} # set to False to run on CPU
+    num_position_iterations: 4
+    num_velocity_iterations: 1
+    contact_offset: 0.01 #0.02
+    rest_offset: 0.0
+    bounce_threshold_velocity: 0.2 # Two colliding objects with a relative velocity below this will not bounce
+    max_depenetration_velocity: 10.0 # maximum default velocity needed to move a Rigidbody's collider out of another collider's surface penetration
+    default_buffer_size_multiplier: 8.0 # scales PhysX temp buffer size for GPU dynamics. Increase it to have enough memory if you have lots of agents
+    max_gpu_contact_pairs: 16777216 # 32*1024*1024
+    num_subscenes: ${....num_subscenes}
+    contact_collection: 1 # 0: CC_NEVER (don't collect contact info), 1: CC_LAST_SUBSTEP (collect only contacts on last substep), 2: CC_ALL_SUBSTEPS (default - all contacts)
+
+# task:
+#   randomize: False
