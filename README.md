@@ -47,7 +47,7 @@ Object pushing rendering:
 
 
 ## Training Instructions
-All training command can be found in [Train.md](Train.md)
+All training command can be found in envs/[README.md](README.md)
 
 
 ## Project structure
