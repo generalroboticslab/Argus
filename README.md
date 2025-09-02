@@ -41,6 +41,31 @@ Object pushing rendering:
 ## Training Instructions
 All training command can be found in [Train.md](Train.md)
 
+
+## project structure
+```
+.
+├── assets/                # Pretrained models and robot descriptions
+│   ├── checkpoint/
+│   └── urdf/
+├── envs/                  # Training and environment code
+│   ├── cfg/               # Configs
+│   ├── common/            # Shared utilities
+│   ├── tasks/             # Task definitions
+│   ├── runs/              # Training / evaluation logs
+│   ├── utils/             # Helper scripts
+│   ├── setup/             # Conda environment file
+│   ├── train.py           # Training entry point
+│   ├── run.sh / exp.sh    # Scripts for training & running experiments
+│   └── ppo_isaacgym.py    # PPO algorithm (Isaac Gym backend)
+│
+├── visualization/         # Images and demo videos
+├── requirements.txt       # Dependencies
+├── Train.md               # Training instructions
+└── README.md
+```
+
+
 ## BibTeX
 
 If you find our paper or codebase helpful, please consider citing:

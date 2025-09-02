@@ -78,3 +78,6 @@ envs/debug_real_observation/
 
 +envs/visualization_debug
 envs/real_observation/
+
+*.pyc
+__pycache__

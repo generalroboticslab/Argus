@@ -181,7 +181,7 @@ class RecordEpisodeStatisticsTorch(gym.Wrapper):
     @torch.compiler.disable(recursive=False)
     def step(self, action):
         observations, rewards, dones, infos = super().step(action)
-        dones = dones.bool() # TODO: TRY TO REMOVE
+        dones = dones.bool()
         self.episode_returns += rewards
         self.episode_lengths += 1
         self.returned_episode_returns[:] = self.episode_returns
@@ -268,7 +268,7 @@ if __name__ == "__main__":
         num_envs=args.num_envs,
         sim_device=args.sim_device,
         rl_device=args.rl_device,
-        graphics_device_id=0, # TODO CHAGNE TO ARGS
+        graphics_device_id=0,
         headless=args.headless,
         multi_gpu=False,
         virtual_screen_capture=args.capture_video,
@@ -353,8 +353,8 @@ if __name__ == "__main__":
             action_dim=args.num_action,
             asymmetric_observations=args.asymmetric_observations
         )
-        ray_encoder: torch.nn.Module = ray_encoder.to(device) # TODO, make this configurable
-        agent: torch.nn.Module = agent.to(device) # TODO, make this configurable
+        ray_encoder: torch.nn.Module = ray_encoder.to(device) 
+        agent: torch.nn.Module = agent.to(device)
         optimizer = optim.Adam(agent.parameters(), lr=args.learning_rate, eps=1e-5)
 
     elif args.agent_name == "activeagent":
@@ -401,12 +401,12 @@ if __name__ == "__main__":
             for param in agent.critic.parameters():
                 param.requires_grad = False
 
-        agent: torch.nn.Module = agent.to(device) # TODO, make this configurable
+        agent: torch.nn.Module = agent.to(device) 
         optimizer = optim.Adam(agent.parameters(), lr=args.learning_rate, eps=1e-5)
 
     if args.agent_name != "activeagent":
         agent = torch.compile(agent)
-        agent: torch.nn.Module = agent.to(device) # TODO, make this configurable
+        agent: torch.nn.Module = agent.to(device) 
         optimizer = optim.Adam(agent.parameters(), lr=args.learning_rate, eps=1e-5)
     
     # # automatic mixed precision https://pytorch.org/tutorials/recipes/recipes/amp_recipe.html
@@ -446,7 +446,7 @@ if __name__ == "__main__":
         
         should_use_image_obs = False # collect image obs
         if should_use_image_obs:
-            buf_obs_image = torch.zeros((args.num_steps, args.num_envs) + obs_image_shape, dtype=torch.float,device=device) # TODO get the image shape
+            buf_obs_image = torch.zeros((args.num_steps, args.num_envs) + obs_image_shape, dtype=torch.float,device=device) 
             buf_next_obs_image = torch.zeros_like(buf_obs_image,device=device)
         
         use_obs2 = False
@@ -591,14 +591,7 @@ if __name__ == "__main__":
                             dof_pos = obs_dict['obs'][..., 3:23]
                             worldSpaceAngularVelocity = obs_dict['obs'][..., :3]
                             predicted_vel = ray_encoder.get_object_velocity_prediction_play(obs_dict['ray_point_cloud'])
-                                    
                             
-                            #TODO temperally test real obs
-                            # real_point_cloud_0 = torch.tensor([np.load('/home/generalroboticslab/repo/Argus_Boxi/vrobot_env/world_coordinate_point_cloud_0.npy')],dtype=torch.float,device=dof_pos.device)
-                            # real_point_cloud_1 = torch.tensor([np.load('/home/generalroboticslab/repo/Argus_Boxi/vrobot_env/world_coordinate_point_cloud_1.npy')],dtype=torch.float,device=dof_pos.device)
-                            # real_point_cloud_2 = torch.tensor([np.load('/home/generalroboticslab/repo/Argus_Boxi/vrobot_env/world_coordinate_point_cloud_2.npy')],dtype=torch.float,device=dof_pos.device)
-                            # real_point_cloud = torch.cat([real_point_cloud_0,real_point_cloud_1,real_point_cloud_2],dim=1)
-                            # predicted_vel = ray_encoder.get_object_velocity_prediction_play(real_point_cloud)
 
 
                             zeros = torch.zeros(*predicted_vel.shape[:-1], 1, device=predicted_vel.device)  # Shape: (a,b,c,1)
@@ -800,7 +793,7 @@ if __name__ == "__main__":
                 if t == args.num_steps - 1:
                     nextnonterminal = ~next_done
                     nextvalues = next_value
-                else:  # TODO USE THE info["time_outs"]
+                else:
                     nextnonterminal = ~dones[t + 1]
                     nextvalues = values[t + 1]
                 delta = rewards[t] + args.gamma * nextvalues * nextnonterminal - values[t]
@@ -896,15 +889,10 @@ if __name__ == "__main__":
 
                 loss.backward()
 
-                # scaler.scale(loss).backward()
-                # scaler.unscale_(optimizer)
                 if not should_use_ray_obs:
                     nn.utils.clip_grad_norm_(agent.parameters(), args.max_grad_norm)
 
                 optimizer.step()
-
-                # scaler.step(optimizer)
-                # scaler.update()
 
             if args.anneal_lr and should_use_ray_obs != True:
                 optimizer.param_groups[0]["lr"] = lr_scheduler.update(optimizer.param_groups[0]["lr"], approx_kl)
@@ -912,11 +900,6 @@ if __name__ == "__main__":
             if should_use_ray_obs:
                 lr_scheduler.step()
             
-            # print('lr:', optimizer.param_groups[0]["lr"])
-
-            # # TODO: validate this
-            # if args.kl_threshold is not None and approx_kl > args.kl_threshold:
-            #     break
 
 
         if iteration % args.log_interval == 0:
