@@ -45,7 +45,7 @@ Object pushing rendering:
 </div>
 
 ## Training Instructions
-All training command can be found in envs/[README.md](README.md)
+All training command can be found in envs/[README.md](envs/README.md)
 
 
 ## Project structure
