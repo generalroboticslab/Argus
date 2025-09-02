@@ -41,10 +41,8 @@ Object tracking: `bash run.sh argus_object_tracking_IL -p`
 
 Object pushing rendering:
 <div align="left">
-    <video src="https://github.com/generalroboticslab/Argus/blob/main/visualization/object_pushing.mp4" width="640" controls autoplay loop>
-    </video>
+    <img src="visualization/object_pushing.gif" width="400">
 </div>
-
 
 ## Training Instructions
 All training command can be found in envs/[README.md](README.md)
