@@ -3,9 +3,9 @@
 # conda activate py38
 export LD_LIBRARY_PATH=${CONDA_PREFIX}/lib
 experiment_files=(
-    exp.sh
+    ./exp.sh
 )
-task=A1Terrain
+task=argus
 
 
 function parse_arguments() {

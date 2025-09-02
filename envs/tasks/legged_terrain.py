@@ -125,7 +125,6 @@ class LeggedTerrain(VecTask):
         # square it to compare the square sum instead of the norm (slightly more efficient)
         self.command_zero_threshold: float = np.square(self.cfg["env"]["commandZeroThreshold"])
         self.command_zero_probability: float = self.cfg["env"]["commandZeroProbability"]
-        # TODO group them together in config
 
         # commands: x vel, y vel, yaw vel, heading
         self.commands = torch.zeros(self.num_envs, 4, dtype=torch.float, device=self.device)
@@ -232,7 +231,6 @@ class LeggedTerrain(VecTask):
             self.get_dof_max_linear_force_to_accelerate = get_dof_max_linear_force_r03
         self.dof_max_linear_force = self.dof_max_torque/self.radius_rotor_wheel # [N] maximum linear force
 
-        # TODO: MAYBE SET A BETTER SCALE FOR DOF FORCES
         self.dof_force_scale = self.cfg["env"]["learn"].get("dofForceScale",1/self.dof_force_target_limit)
         self.dof_force_target_scale = self.cfg["env"]["learn"].get("dofForceTargetScale",1/self.dof_force_target_limit)
         self.heightmap_scale = self.cfg["env"]["learn"]["heightMapScale"]
@@ -808,7 +806,7 @@ class LeggedTerrain(VecTask):
         # compute cost of transport metrics
         if self.evaluate or self.enable_data_publisher:
             self.compute_cost_of_transport_metrics = True
-            buffer_len=250 # TODO,  5 seconds
+            buffer_len=250 # 5 seconds
             self.buffer_com_pos = buffer.BatchedRingTensorBuffer(buffer_len=buffer_len, batch_size=self.num_envs, shape=3, dtype=torch.float, device=self.device)
             self.buffer_dof_pow = buffer.BatchedRingTensorBuffer(buffer_len=buffer_len, batch_size=self.num_envs, shape=1, dtype=torch.float, device=self.device)
 
@@ -991,7 +989,6 @@ class LeggedTerrain(VecTask):
             self.contact_target = self.phase <= self.phase_stance_ratio # 1 = stance, 0 = swing
 
         if self.keep_still_at_zero_command:
-            # todo fix 0.5 bug
             should_stop = self.is_zero_command & (self.last_contact_target.sum(dim=-1)==self.num_foot) # & (self.projected_gravity[:,2]<-0.99) # 10 deg tilt
             self.contact_target[should_stop] = 1 # set contact_target to 1 if zero command
         self.last_contact_target[:] = self.contact_target
@@ -1008,7 +1005,6 @@ class LeggedTerrain(VecTask):
             self.virtual_display = SmartDisplay(size=SCREEN_CAPTURE_RESOLUTION)
             self.virtual_display.start()
 
-        # todo: read from config
         if self.headless:
             self.viewer = None
             return
@@ -1145,7 +1141,7 @@ class LeggedTerrain(VecTask):
             "dofVelocity": cfg_learn["dofVelocityNoise"] * noise_level * self.dof_vel_scale,
             "dof_force_target": 0,
             "dof_strength": 0,
-            "dofForce": 0, # TODO, MAYBE ADD NOISE FOR DOF FORCE
+            "dofForce": 0,
             "heightMap": cfg_learn["heightMapNoise"] * noise_level * self.heightmap_scale,
             "base_height": 0,
             "actions": 0,  # previous actions
@@ -1330,7 +1326,6 @@ class LeggedTerrain(VecTask):
                                      dtype=torch.long, device=self.device)
         assert(self.foot_ids.numel() > 0)
 
-        # TODO CHANGE KNEE COLLISIONN TO A MORE GENARIC TYPE OF REWARD: collision for anything other than the foot maybe?
         knee_name = cfg_asset.get("kneeName", None)
         if knee_name is None:
             # if knee_name is None: exclude base link and feet, include all other links
@@ -1658,7 +1653,6 @@ class LeggedTerrain(VecTask):
             "commands": self.commands[:, :3] * self.commands_scale,
             "commands_xy": self.commands[:, :2] * self.commands_scale[:2],
             "dofPosition": self.dof_pos[:,self.actuated_dof_mask] * self.dof_pos_scale,
-            # "dofVelocity": self.dof_vel[:,self.actuated_dof_mask] * self.dof_vel_scale, #TODO: FIXME. have to use the computed velocity instead
             "dofVelocity": self.dof_vel_computed[:,self.actuated_dof_mask] * self.dof_vel_scale, #TODO: FIXME. have to use the computed velocity instead
             "dof_force_target": self.actuated_dof_force_target * self.dof_force_target_scale,
             "actuated_dof_force_target_actual": self.actuated_dof_force_target_actual * self.dof_force_target_scale,
@@ -1700,7 +1694,6 @@ class LeggedTerrain(VecTask):
 
         if self.use_obs2:
             obs2_buf_single_frame = torch.cat(itemgetter(*self.obs2_names)(obs_dict), dim=-1)
-            # TODO add noise vector
             self.batched_obs2_buf.add(obs2_buf_single_frame)
             self.obs2_buf = torch.transpose(self.batched_obs2_buf.get_latest_n(self.num_stacked_obs_frame,offset=self.max_observation_delay_steps).clone(),0,1).reshape(self.num_envs, self.num_obs2)
 
@@ -1747,17 +1740,17 @@ class LeggedTerrain(VecTask):
         rew["dof_vel_computed"] = torch.square(self.dof_vel_computed).sum(dim=-1)
         rew["dof_acc_computed"] = torch.square(self.dof_acc_computed).sum(dim=-1)
         # joint vel penalty
-        rew["dof_vel"] = exp_square_sum(self.dof_vel_computed, self.rew_dof_vel_exp_scale) # TODO FIXME
+        rew["dof_vel"] = exp_square_sum(self.dof_vel_computed, self.rew_dof_vel_exp_scale)
         actuated_dof_pos_delta = (self.dof_pos - self.desired_dof_pos)[:,self.actuated_dof_mask].abs()
         # joint position penalty
         rew["dof_pos"] = exp_square_sum(actuated_dof_pos_delta, self.rew_dof_pos_exp_scale)
         rew["dof_absolute_position"] = torch.mean(self.dof_pos[:,self.actuated_dof_mask]+0.105,dim=-1)
-        rew["dof_pow"] = (self.dof_vel_computed[:,self.actuated_dof_mask] * self.actuated_dof_force_target).abs().mean(dim=1)*self.total_gravity_inv # TODO FIXME
+        rew["dof_pow"] = (self.dof_vel_computed[:,self.actuated_dof_mask] * self.actuated_dof_force_target).abs().mean(dim=1)*self.total_gravity_inv
         # penalty for position exceeding dof limit
         rew["dof_limit"] = out_of_bound_square_sum(self.dof_pos, self.dof_limit_lower, self.dof_limit_upper)
         # collision penalty
         knee_collision = square_sum(self.contact_force[:, self.knee_ids, :], dim=2) > 1.0
-        rew["collision"] = torch.sum(knee_collision, dim=1, dtype=torch.float)  # sum vs any ?
+        rew["collision"] = torch.sum(knee_collision, dim=1, dtype=torch.float)
         # foot impact penalty (num_envs,num_foot,3)
         rew["impact"] = torch.clamp(self.foot_contact_force[:, :, 2]*self.total_gravity_inv.view(self.num_envs,1)-1,min=0,max=2).square().sum(dim=1)
         # foot slip penalty
@@ -1785,8 +1778,7 @@ class LeggedTerrain(VecTask):
         self.rew_buf += self.rew_scales["termination"] * self.reset_buf * ~self.timeout_buf
 
         if self.compute_cost_of_transport_metrics:
-            # dof_pow = (self.dof_vel[:,self.actuated_dof_mask] * self.actuated_dof_force_target) # TODO FIXME
-            dof_pow = (self.dof_vel_computed[:,self.actuated_dof_mask] * self.actuated_dof_force_target) # TODO FIXME
+            dof_pow = (self.dof_vel_computed[:,self.actuated_dof_mask] * self.actuated_dof_force_target)
             dof_pow_sum = dof_pow.clamp_min(0).sum(dim=1)
             self.buffer_com_pos.add_and_fill_batch(self.root_state[:, :3])
             self.buffer_dof_pow.add_and_fill_batch(dof_pow_sum.unsqueeze(1))
@@ -2004,15 +1996,11 @@ class LeggedTerrain(VecTask):
         # random orientation
         if self.randmoize_base_init_orientation:
             self.base_init_state[env_ids, 3:7] = random_quaternion(len_ids, device=self.device)
-            # # HACK TODO CHANGE BACK
-            # self.base_init_state[env_ids, 3:7] = random_quaternion(1, device=self.device)
 
         if self.push_enable_at_reset:
             push_vel = torch_rand_tensor(
                 self.push_vel_min, self.push_vel_max, (len_ids, 6), device=self.device
             )
-            # # HACK TODO CHANGE BACK
-            # push_vel = torch_rand_tensor(self.push_vel_min, self.push_vel_max, (1, 6), device=self.device)
             self.push_vel[env_ids] = push_vel
             self.base_init_state[env_ids, 7:13]+= push_vel
 
@@ -2147,12 +2135,12 @@ class LeggedTerrain(VecTask):
             self.kd[env_ids] = self.kd_default[env_ids] *(torch.empty(len_ids, self.num_actuated_dof,dtype=torch.float, device=self.device).uniform_(*self.control_kd_range))
 
 
-        # # TODO: reset some observations
+        # reset some observations
         self.projected_gravity[env_ids] = quat_rotate_inverse(self.base_quat[env_ids], self.base_gravity_vec[env_ids])
         self.projected_gravity_filtered[env_ids]=self.projected_gravity[env_ids]
 
         self.base_quat_filtered[env_ids] = self.base_quat[env_ids]
-        self.base_rotation_matrix[env_ids] = torch.eye(3, device=self.device) # TODO maybe remove repeat
+        self.base_rotation_matrix[env_ids] = torch.eye(3, device=self.device)
 
         if self.randomize_body_force:
             # reset rigid body forces
@@ -2198,33 +2186,14 @@ class LeggedTerrain(VecTask):
                 self.dof_disable_prob = min(self.common_step_counter*self.dof_disable_curriculum_num_step_inv,1.0)*self.dof_disable_prob_final
                 print(f"dof_disable_prob: {self.dof_disable_prob}")
             self.disable_dof_boolean[env_ids] = torch.rand(len_ids,self.num_dof, device=self.device) < self.dof_disable_prob
-            # # # HACK TODO CHANGE BACK
-            # # self.disable_dof_boolean[:]= False
-            # # self.disable_dof_boolean[env_ids,3]=True
-            # # self.disable_dof_boolean[env_ids,6]=True
-            # # self.disable_dof_boolean[env_ids,13]=True
-
-            # self.disable_dof_boolean[:]= False
-            # self.disable_dof_boolean[env_ids,0]=True
-            # self.disable_dof_boolean[env_ids,8]=True
-            # self.disable_dof_boolean[env_ids,11]=True
-
-            # self.disable_dof_boolean[:]= False
-            # self.disable_dof_boolean[env_ids,1]=True
-            # self.disable_dof_boolean[env_ids,4]=True
-            # # self.disable_dof_boolean[env_ids,16]=True
 
             if (not self.headless) and self.enable_viewer_sync: # should reset graphics as well
                 disable_dof_boolean_reset = self.disable_dof_boolean[env_ids]
                 for env_idx, dof_idx in torch.nonzero(~disable_dof_boolean_reset):
                     self.gym.set_rigid_body_color(self.envs[env_idx], self.actor_handles[env_idx], dof_idx+1, gymapi.MESH_VISUAL, self.dof_color_enable)
                 for env_idx, dof_idx in torch.nonzero(disable_dof_boolean_reset):
-                    # HACK for Argus bot only, should use the child of the dof indtead
+                    # for Argus bot only, should use the child of the dof for other robots
                     self.gym.set_rigid_body_color(self.envs[env_idx], self.actor_handles[env_idx], dof_idx+1, gymapi.MESH_VISUAL, self.dof_color_disable)
-
-        # for env_idx in range(self.num_envs//2): # HACK CHANGE BACK
-        #     for dof_idx in range(self.num_dof+1):
-        #         self.gym.set_rigid_body_color(self.envs[env_idx], self.actor_handles[env_idx], dof_idx, gymapi.MESH_VISUAL, gymapi.Vec3(0.255, 0.569, 0.929))
 
         # fill extras
         self.extras["episode"] = {}
@@ -2256,20 +2225,6 @@ class LeggedTerrain(VecTask):
 
         self.terrain_levels[env_ids] -= (is_not_following_command & (~self.timeout_buf[env_ids])).int()
         self.terrain_levels[env_ids] += (is_following_command | (displacement_norm > self.terrain.env_length / 2)).int()
-
-        # distance = torch.norm(displacement, dim=1)
-        # command_distance = torch.norm(self.commands[env_ids, :2],dim=-1) * self.max_episode_length_s
-        # # # not timed out
-        # # self.terrain_levels[env_ids] -= 1 * ((distance < command_distance * 0.25) & (~self.timeout_buf[env_ids]))
-        # self.terrain_levels[env_ids] -= 1 * ((distance < (command_distance * 0.5)) & (~self.timeout_buf[env_ids]))
-        # # TODO check level up/down condition
-        # self.terrain_levels[env_ids] += (distance > self.terrain.env_length / 2).int()
-
-        # self.terrain_levels[env_ids] += 1 * torch.logical_or(
-        #     distance > self.terrain.env_length / 2, distance > (command_distance * 0.9))
-
-        # # if reached max level, go back to level 0
-        # self.terrain_levels[env_ids] = torch.clip(self.terrain_levels[env_ids], 0) % self.terrain.env_rows
 
         # if reached max level, go to a random level
         self.terrain_levels[env_ids] = self.terrain_levels[env_ids].clip(0)
@@ -2503,10 +2458,6 @@ class LeggedTerrain(VecTask):
         self.should_fetch_result = True
         self.should_step_graphics = True
 
-        # # randomize actions # TODO: rurrently need to completely bypass this
-        # if self.dr_randomizations.get('actions', None):
-        #     actions = self.dr_randomizations['actions']['noise_lambda'](actions)
-
         self.action = torch.clamp(actions.clone().to(self.device), -self.clip_actions, self.clip_actions)
 
         if self.enable_data_receiver: # keyboard operator overrides using data from self.data_receiver
@@ -2519,15 +2470,8 @@ class LeggedTerrain(VecTask):
                     self.progress_buf[:]= self.max_episode_length
                 if "push" in self.data_receiver.data and self.data_receiver.data["push"] == True:
                     self.push_robot_base_indexed(torch.arange(self.num_envs, device=self.device))
-                # if "dof_pos_target" in self.data_receiver.data:
-                #     # self.dof_pos_target[:,self.data_receiver.data["leg_id"]] = torch.tensor(self.data_receiver.data["dof_pos_target"],device=self.device)
-                #     self.dof_pos_target = self.desired_dof_pos[:]
-                #     # self.dof_pos_target[:] = torch.tensor(self.data_receiver.data["dof_pos_target"],device=self.device)
-                #     self.dof_pos_target[:,self.data_receiver.data["leg_id"]] = torch.tensor(self.data_receiver.data["dof_pos_target"],device=self.device)
                 if "action" in self.data_receiver.data:
                     self.action[:,self.data_receiver.data["leg_id"]] = torch.tensor(self.data_receiver.data["action"],device=self.device)
-                    # self.dof_pos_target[:] = self.action_scale * self.action_to_use + self.default_dof_pos[:,self.actuated_dof_mask]
-
 
         if self.randomize_action_delay:
             self.action_delay.uniform_(*self.action_delay_log_range).exp_()
@@ -2539,62 +2483,35 @@ class LeggedTerrain(VecTask):
             self.dof_pos_target = self.action_scale * self.action_to_use[:,:self.num_actuated_dof] + self.default_dof_pos[:,self.actuated_dof_mask]
             self.action_is_on = sigmoid_k(self.action_to_use[:,self.num_actuated_dof:], self.action_is_on_sigmoid_k)
             if self.passive_curriculum:  # TODO change the hardcoded values to a variable
-                # self.passive_action_min_value = 1.0 - float(min(self.common_step_counter/5e4,1.0))
-                # self.passive_action_min_value = 0.8 - float(min(self.common_step_counter/5e4,0.8))
-                # self.passive_action_min_value = 0.5 - float(min(self.common_step_counter/5e4,0.5))
-
                 self.passive_action_min_value = max(0.5-self.common_step_counter/5e4,self.min_action_is_on)
-
-                # self.passive_action_min_value = 0.5 - float(min(self.common_step_counter/5e4,0.5)) # always 10% on
-                # self.action_is_on = torch.clamp_min(self.action_is_on,min=self.passive_action_min_value)
                 self.action_is_on = self.passive_action_min_value+(1-self.passive_action_min_value)*self.action_is_on # alternative
-
                 if self.common_step_counter % 1000 == 0:
                     print(f"self.passive_action_min_value={self.passive_action_min_value}")
             else:
                 self.action_is_on = self.min_action_is_on + (1 - self.min_action_is_on) * self.action_is_on
-            # self.action_is_on = self.actions_to_use[:,self.num_actuated_dof:]  > -0.5
-            # self.actions[:, self.num_actuated_dof:] = torch.where(self.action_is_on, 1, -1)
         else:
             self.dof_pos_target = self.action_scale * self.action_to_use + self.default_dof_pos[:,self.actuated_dof_mask]
             self.action_is_on = 1
 
         if self.should_dof_disable:
             if self.disable_dof_freeze:
-                self.dof_pos_target[self.disable_dof_boolean] = self.default_dof_pos[self.disable_dof_boolean] # HACK TODO CHANGE BACK
+                self.dof_pos_target[self.disable_dof_boolean] = self.default_dof_pos[self.disable_dof_boolean]
             else:
                 self.dof_pos_target[self.disable_dof_boolean] = self.dof_pos[self.disable_dof_boolean]
 
-        # # soft limit clamping
-        # below_min_limit = (self.dof_pos < self.dof_soft_limit_lower) & (self.dof_pos_target < self.dof_soft_limit_lower)
-        # above_max_limit = (self.dof_pos > self.dof_soft_limit_upper) & (self.dof_pos_target > self.dof_soft_limit_upper)
-        # torch.where(condition=below_min_limit,input=self.dof_soft_limit_lower,other=self.dof_pos_target,out=self.dof_pos_target)
-        # torch.where(condition=above_max_limit,input=self.dof_soft_limit_upper,other=self.dof_pos_target,out=self.dof_pos_target)
-
-
         self.pre_physics_step()
-        # to fix!
         if (self.device == 'cpu' or self.camera_sensor_enable) and self.should_fetch_result:
             self.gym.fetch_results(self.sim, True)
 
         # compute observations, rewards, resets, ...
         self.post_physics_step()
 
-        # #TODO currently need to completely bypass this
-        # # step physics and render each frame
-        # for i in range(self.control_freq_inv):
-        #     if self.force_render:
-        #         self.render()
-        #     self.gym.simulate(self.sim)
         if self.force_render:
             self.render()
             self.gym.clear_lines(self.viewer)
 
         self.control_steps += 1
 
-        # # randomize observations #TODO currently need to completely bypass dr_randomizations
-        # if self.dr_randomizations.get('observations', None):
-        #     self.obs_buf = self.dr_randomizations['observations']['noise_lambda'](self.obs_buf)
         self.extras["time_outs"] = self.timeout_buf.to(self.rl_device)
         self.update_obs_dict()
         return self.obs_dict, self.rew_buf.to(self.rl_device), self.reset_buf.to(self.rl_device), self.extras
@@ -2615,13 +2532,6 @@ class LeggedTerrain(VecTask):
         if self.enable_erfi: # extended random force injection
             self.erfi_rfi.uniform_(*self.erfi_rfi_range).add_(self.erfi_rao)
 
-        # b = 0.1 # soft dof limit # HACK THIS SHOULD BE CONFIGURED
-        # a = torch.tensor(self.action_scale, dtype=torch.float, device=self.device).expand_as(self.dof_pos)
-        # k = (b-a)/b
-        # dof_pos_target_lower_bound = torch.max(-a, -a + k*self.dof_pos)
-        # dof_pos_target_upper_bound = torch.min(a,   a + k*self.dof_pos)
-        # self.dof_pos_target.clamp_(dof_pos_target_lower_bound, dof_pos_target_upper_bound)
-
         self.last_dof_pos[:] = self.dof_pos
         self.last_dof_vel_computed[:] = self.dof_vel_computed
 
@@ -2632,34 +2542,26 @@ class LeggedTerrain(VecTask):
                 self.dof_pos_error[:] = 0
 
             self.dof_pos_error_integral.add_(self.dof_pos_error * self.dt) # integral error
-            # force_computed = self.kp * (self.dof_pos_target - self.dof_pos) - self.kd * self.dof_vel # TODO FIXME
-            force_computed = self.ki * self.dof_pos_error_integral + self.kp * self.dof_pos_error - self.kd * self.dof_vel # TODO FIXME
+            force_computed = self.ki * self.dof_pos_error_integral + self.kp * self.dof_pos_error - self.kd * self.dof_vel 
             self.last_dof_pos_substep[:] = self.dof_pos
-            # force_computed = self.kp * (self.dof_pos_target - self.dof_pos) - self.kd * self.dof_vel_computed_single_substep # TODO FIXME
             if i==0:
                 self.actuated_dof_force_target[:] = force_computed # this is the idealized computed torque without motor strength/randomization
 
             # robstride02 motor linear fit
-            # self.dof_max_linear_force_to_accelerate = torch.clip(self.voltage_motor-6-torch.abs(self.dof_vel/self.radius_rotor_wheel),min=0,max=self.dof_max_torque)/self.radius_rotor_wheel
-            # dof_vel_is_positive = self.dof_vel>=0 # TODO FIXME
-            # dof_vel_is_negative = self.dof_vel<0 # TODO FIXME
             self.dof_max_linear_force_to_accelerate = self.get_dof_max_linear_force_to_accelerate(self.dof_vel_computed_single_substep)
-            dof_vel_is_positive = self.dof_vel_computed_single_substep>=0 # TODO FIXME
-            dof_vel_is_negative = self.dof_vel_computed_single_substep<0 # TODO FIXME
+            dof_vel_is_positive = self.dof_vel_computed_single_substep>=0
+            dof_vel_is_negative = self.dof_vel_computed_single_substep<0
 
             force_computed[dof_vel_is_positive].clamp_(None,self.dof_max_linear_force_to_accelerate[dof_vel_is_positive])
             force_computed[dof_vel_is_negative].clamp_(-self.dof_max_linear_force_to_accelerate[dof_vel_is_negative],None)
 
             force_computed.clamp_(-self.dof_max_linear_force,self.dof_max_linear_force)
-            # force_computed.clamp_(-0,0) #HACK TODO CHANGE BACK
             if self.enable_passive_dynamics:
                 force_computed*=self.action_is_on
-            force_actual = force_computed*self.dof_strength+self.erfi_rfi  # randomized dof strength # TODO: make it better
+            force_actual = force_computed*self.dof_strength+self.erfi_rfi  # randomized dof strength
             if i==0: # use the fist iteration FOR SIM2RAL maching
                 self.actuated_dof_force_target_actual[:] = force_actual
             self.dof_actuation_force[:] = force_actual # need to [:] to use the in-place version
-            # # HACK FOR THROW ONLY CHANGE BACK
-            # self.dof_actuation_force[:self.num_envs//2] = -100
 
             # self.gym.set_dof_actuation_force_tensor(self.sim, gymtorch.unwrap_tensor(toque_actual))
             self.gym.set_dof_actuation_force_tensor(self.sim, self.dof_actuation_force_tensor)
@@ -2691,7 +2593,6 @@ class LeggedTerrain(VecTask):
             if self.enable_passive_dynamics:
                 torque*=self.action_is_on
             torque.add_(self.erfi_rfi).clamp_(self.actuated_dof_force_min, self.actuated_dof_force_max)
-            # TODO maybe check if action exceeds limit and make it a reward
             self.dof_actuation_force[:,self.actuated_dof_mask] = torque
             self.gym.set_dof_actuation_force_tensor(self.sim, self.dof_actuation_force_tensor)
 
@@ -2742,8 +2643,6 @@ class LeggedTerrain(VecTask):
         self.progress_buf += 1
         self.randomize_buf += 1
         self.common_step_counter += 1
-        # if self.common_step_counter % self.push_interval == 0 and self.should_push_robots:
-        #     self.push_robots()
 
         if self.should_push_robots:
             env_ids = torch.nonzero(self.progress_buf%self.push_interval == 0).squeeze_(1)
@@ -2753,7 +2652,7 @@ class LeggedTerrain(VecTask):
         # prepare quantities
         # self.base_quat = self.root_state[:, 3:7]
         # self.base_lin_vel = quat_rotate_inverse(self.base_quat, self.root_state[:, 7:10])
-        self.base_lin_vel = self.root_state[:, 7:10] # in world space!!!!!!!!
+        self.base_lin_vel = self.root_state[:, 7:10] # in world space!
         self.world_space_base_ang_vel = self.root_state[:, 10:13]
         self.base_ang_vel = quat_rotate_inverse(self.base_quat, self.root_state[:, 10:13])
 
@@ -2768,7 +2667,6 @@ class LeggedTerrain(VecTask):
 
         if self.randmoize_orientation_delay:
             self.orientation_delay.uniform_(*self.orientation_delay_log_range).exp_()
-            # self.base_quat_filtered[:] = normalize(self.orientation_delay*self.base_quat_filtered[:]  + (1 - self.orientation_delay)*self.base_quat)
             self.base_quat_filtered[:] = slerp(self.orientation_delay, self.base_quat, self.base_quat_filtered)
             self.base_rotation_matrix_filtered[:] = quaternion_to_rotation_matrix(self.base_quat_filtered)
         else:
@@ -2780,19 +2678,13 @@ class LeggedTerrain(VecTask):
 
         self.base_quat_yaw = get_quat_yaw(self.base_quat)
 
-        self.dof_acc = (self.dof_vel - self.last_dof_vel) * self.rl_dt_inv  # TODO check if [:] is needed # TODO
-        self.dof_acc_computed = (self.dof_vel_computed - self.last_dof_vel_computed) * self.rl_dt_inv  # TODO check if [:] is needed # TODO
-        # self.dof_jerk = (self.dof_acc - self.last_dof_acc) * self.rl_dt_inv
+        self.dof_acc = (self.dof_vel - self.last_dof_vel) * self.rl_dt_inv  
+        self.dof_acc_computed = (self.dof_vel_computed - self.last_dof_vel_computed) * self.rl_dt_inv 
         self.base_relative_angular_velocity_computed = calculate_angular_velocity_tensor(self.last_base_quat,self.base_quat,self.rl_dt)
         self.foot_quat = self.rb_state[:, self.foot_ids, 3:7] # foot quaternion [num_envs, num_foot, 4] # this is a copy!!
         self.foot_projected_gravity=quat_rotate_inverse(self.foot_quat.view(-1, 4), self.foot_gravity_vec).view(self.num_envs, self.num_foot, 3)
 
         self.foot_forward = quat_apply(self.foot_quat.view(-1, 4), self.foot_forward_vec_local).view(self.num_envs, self.num_foot, 3)
-
-        # # foot_quat relative to the base yaw frame: foot_quat * base_quat_yaw_inv
-        # base_quat_yaw_inv = quat_conjugate(self.base_quat_yaw) # 1/quat_yaw
-        # self.foot_quat_rel = quat_mul(self.foot_quat.view(-1, 4), base_quat_yaw_inv.repeat_interleave(self.num_foot, dim=0)).view(self.num_envs, self.num_foot, 4) # foot quat relative to the base yaw frame
-        # self.foot_forward_rel = quat_apply(self.foot_quat_rel.view(-1, 4), self.foot_forward_vec_local).view(self.num_envs, self.num_foot, 3)
 
         self.foot_pos = self.rb_state[:, self.foot_ids, 0:3]
 
@@ -2819,13 +2711,10 @@ class LeggedTerrain(VecTask):
 
         # foot contact
         self.foot_contact_force = self.contact_force[:, self.foot_ids, :]
-        self.foot_contact = self.foot_contact_force[:, :, 2] > self.foot_contact_threshold  # todo check with norm
-        # # HACK: no contact
-        # self.foot_contact[:] = 0
+        self.foot_contact = self.foot_contact_force[:, :, 2] > self.foot_contact_threshold
 
         self.foot_contact_filt = torch.logical_or(self.last_foot_contact, self.foot_contact) # filter the contacts because the contact reporting of PhysX is unreliable on meshes
         self.last_foot_contact = self.foot_contact
-        # self.foot_contact = self.sensor_forces[:, :, 2] > 1.0
 
         if self.viewer and self.enable_keyboard_operator:
             self.commands[:, 3] = wrap_to_pi(2 * self.commands[:, 2] + heading)
@@ -2854,13 +2743,9 @@ class LeggedTerrain(VecTask):
                 self.has_first_contact |= first_contact
                 # print(first_contact)
 
-
-        # update last_...
-
         if self.enable_passive_dynamics:
             self.last_action_is_on = self.action_is_on
 
-        # self.dof_pos_filt[:] = self.dof_pos_filt * 0.97 + self.dof_pos * 0.03
         self.last_action[:] = self.action
         self.last_dof_vel[:] = self.dof_vel
         self.last_dof_acc[:] = self.dof_acc
@@ -2887,14 +2772,7 @@ class LeggedTerrain(VecTask):
 
                 self.object_vel[:, 0] = self.random_x_displacement/self.rl_dt
                 self.object_vel[:, 1] = self.random_y_displacement/self.rl_dt
-                # mask = self.progress_buf % 80 == 0
-                # len_ids = mask.sum()  # Count of True values
-                # self.random_x_displacement[mask], self.random_y_displacement[mask] = sample_points_with_norm_constraint(
-                #     self.displacement_range[0], 
-                #     self.displacement_range[1], 
-                #     len_ids, 
-                #     self.device
-                # )
+
             # Update root state while ensuring correct indexing
             if not self.cfg['env']["ray_obs"]['static_debug']:
                 self.all_root_state[self.object_handles, 0] += self.random_x_displacement
@@ -3181,7 +3059,6 @@ def sigmoid_k(x: torch.Tensor, k: float) -> torch.Tensor:
     return 1 / (1 + torch.exp(-k*x))
 
 
-# TODO verify if this is correct
 @torch.jit.script
 def quaternion_to_rotation_matrix(quaternion: torch.Tensor) -> torch.Tensor:
     """
@@ -3359,7 +3236,7 @@ def generate_camera_ray_directions(
     screen_x, screen_y = torch.meshgrid(u_screen, v_screen, indexing='xy')
 
     camera_x = screen_x * max_x
-    camera_y = screen_y * max_y # TODO verify this
+    camera_y = screen_y * max_y
     camera_z = torch.ones_like(camera_x)
 
     ray_directions = torch.stack([camera_x, camera_y, camera_z], dim=-1)
