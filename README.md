@@ -63,11 +63,11 @@ All training command can be found in envs/[README.md](envs/README.md)
 │   ├── setup/             # Conda environment file
 │   ├── train.py           # Training entry point
 │   ├── run.sh / exp.sh    # Scripts for training & running experiments
-│   └── ppo_isaacgym.py    # PPO algorithm (Isaac Gym backend)
+│   ├── ppo_isaacgym.py    # PPO algorithm (Isaac Gym backend)
+│   └── README.md          # Training instructions
 │
 ├── visualization/         # Images and demo videos
 ├── requirements.txt       # Dependencies
-├── Train.md               # Training instructions
 └── README.md
 ```
 
