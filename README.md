@@ -50,7 +50,7 @@ Object pushing rendering:
 All training command can be found in [Train.md](Train.md)
 
 
-## project structure
+## Project structure
 ```
 .
 ├── assets/                # Pretrained models and robot descriptions
