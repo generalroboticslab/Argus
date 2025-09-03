@@ -60,7 +60,7 @@ Object tracking: `bash run.sh argus_object_tracking_IL -p`
 
 Object pushing rendering:
 <div align="left">
-    <img src="visualization/object_pushing.gif" width="800">
+    <img src="visualization/object_pushing.gif" width="400">
 </div>
 
 ## Training Instructions
