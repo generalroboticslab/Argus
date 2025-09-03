@@ -1,15 +1,10 @@
 # Extreme Symmetry Enables Omnidirectional and Multifunctional Robotics
 
-[Jiaxun Liu*](https://jiaxunliu.com),
-[Boxi Xia*](https://scholar.google.com/citations?user=TjA61pwAAAAJ),
-[Boyuan Chen](http://boyuanchen.com/)
-
-Duke University  
-\* Equal contribution
+### [Jiaxun Liu*](https://jiaxunliu.com), [Boxi Xia*](https://scholar.google.com/citations?user=TjA61pwAAAAJ), [Boyuan Chen](http://boyuanchen.com/) 
+Duke University    
+*Equal contribution
 
 ### [Project Website](http://generalroboticslab.com/Argus-v1) | [Paper](#TBD) | [Video](#TBD) 
-
-
 
 ## Overview
 This repo includes the code for the Argus robot policy training in simulation.
@@ -58,14 +53,26 @@ Once setup and running you will see:
 Object pushing: `bash run.sh argus_object_pushing_IL -p` \
 Object tracking: `bash run.sh argus_object_tracking_IL -p` 
 
-Object pushing rendering:
+Once setup and running you will see: \
+Object pushing demo:
 <div align="left">
-    <img src="visualization/object_pushing.gif" width="400">
+    <img src="visualization/object_pushing_demo.gif" width="800">
 </div>
+Object tracking demo:
+<div align="left">
+    <img src="visualization/object_tracking_demo.gif" width="800">
+</div>
+
 
 ## Training Instructions
 All training command can be found in [envs/README.md](envs/README.md)
 
+# Blender rendering
+
+Detailed instruction can be found in [blender_rendering/README.md](blender_rendering/README.md)
+<div align="left">
+    <img src="visualization/object_pushing.gif" width="500">
+</div>
 
 ## Project structure
 ```

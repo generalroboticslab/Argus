@@ -970,7 +970,7 @@ class LeggedTerrain(VecTask):
                         resolution=[5, 5],
                         dropout_rate=self.cfg['env']['ray_obs']['random_dropout'],  # 0.2 dropout
                         noise_std=self.cfg['env']['ray_obs']['random_noise'],   # 0.005
-                        apply_noise=self.cfg['env']['ray_obs']['apply_noise_on_point_cloud']
+                        apply_noise=self.cfg['env']['ray_obs']['apply_noise_on_point_cloud'],
                     )
             self.updated_ray_point_clouds[idx] = torch.tensor(point_positions, dtype=torch.float, device=self.device)
 
@@ -2831,8 +2831,13 @@ class LeggedTerrain(VecTask):
         if self.enable_ray_visualization:
             sphere_geom = gymutil.WireframeSphereGeometry(0.02, 12, 12, self.sphere_pose, color=(1, 1, 0))
             for location in self.updated_ray_point_clouds[0]:
-                transform = gymapi.Transform(p=gymapi.Vec3(location[0],location[1],location[2]+0.6), r=gymapi.Quat(0, 0,0,0)) # camera uses z axis
+                if self.cfg['env']["ray_obs"]['debug_ray_point_cloud']:
+                    transform = gymapi.Transform(p=gymapi.Vec3(location[0],location[1],location[2]+0.6), r=gymapi.Quat(0,0,0,0)) # camera uses z axis
+                else:
+                    location_under_robot_coordinate = location[:3].clone() + self.robot_root_position[0]
+                    transform = gymapi.Transform(p=gymapi.Vec3(location_under_robot_coordinate[0],location_under_robot_coordinate[1],location_under_robot_coordinate[2]), r=gymapi.Quat(0,0,0,0)) # camera uses z axis
                 gymutil.draw_lines(sphere_geom, self.gym, self.viewer, self.envs[self.ref_env], transform)
+
         self.point_cloud_history_buffer[:,:-self.num_points] = self.point_cloud_history_buffer[:,self.num_points:].clone()
         self.point_cloud_history_buffer[:,-self.num_points:] = self.updated_ray_point_clouds.clone()
         self.distance_history_buffer[:,:-self.num_points] = self.distance_history_buffer[:,self.num_points:].clone()
@@ -3382,7 +3387,7 @@ def sample_points_with_norm_constraint(low_norm, high_norm, n_samples, device=No
 
 
 
-def convert_ray_distance_to_position(origins, directions, quaternions, robot_root_pos, distance_pixel_normalized, resolution=[5,5], dropout_rate=0.1, noise_std=0.01,apply_noise=True):
+def convert_ray_distance_to_position(origins, directions, quaternions, robot_root_pos, distance_pixel_normalized, resolution=[5,5], dropout_rate=0.1, noise_std=0.01,apply_noise=True,debug_ray_point_cloud=False):
     """
     Convert ray distances to 3D positions - FIXED VERSION with dropout and Gaussian noise
 

@@ -83,6 +83,7 @@ env:
     point_history_length: 3 # number of frames to stack in the ray point cloud === no need if use num_stacked_obs_frame
     num_perception_units: 20 # number of perception units to use
     visualize_ray_point_cloud: false
+    debug_ray_point_cloud: false
     max_distance: 2.5 # [m] maximum distance of the ray point cloud
     resolution: [5,5]
     random_vel: false

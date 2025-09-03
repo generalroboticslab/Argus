@@ -36,10 +36,9 @@ import isaacgymenvs
 import torch
 import numpy as np
 import yaml
-
-
 import sys
 import os
+
 sys.path.append(isaacgymenvs.__path__[0])  # fix isaacgymenvs imports
 sys.path.append(os.path.abspath(__file__ + "/../.."))  # fix envs imports
 
@@ -54,7 +53,6 @@ isaacgym_task_map.update(
     "argus": legged_terrain.LeggedTerrain,
    
 })
-
 
 # using np.arange [star,end), step, round to 15 decimals
 OmegaConf.register_new_resolver(
