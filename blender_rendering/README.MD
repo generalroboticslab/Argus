@@ -1,5 +1,7 @@
 # Blender rendering instruction
 
+Please download the blender file from [here](https://drive.google.com/drive/folders/1OIzNFc4BLMO4p8IIS8wud3FVtw9b3A39?usp=sharing).
+
 ## Design interface
 
 <div align="left">
