@@ -1,7 +1,8 @@
 # Extreme Symmetry Enables Omnidirectional and Multifunctional Robotics
-### Project Website: tbd
+### [Project Website](http://generalroboticslab.com/Argus-v1)
 
-This repo includes the code for the Argus robot policy training.
+## Overview
+This repo includes the code for the Argus robot policy training in simulation.
 <div align="left">
     <img src="visualization/Argus_multi-functional.png" width="400">
 </div>
@@ -25,7 +26,9 @@ Run following checkpoint to check how Argus moves!
 cd ARGUS/envs
 conda activate argus && export LD_LIBRARY_PATH=${CONDA_PREFIX}/lib
 
-bash run.sh argus_base -pk
+bash run.sh argus_base -pk # with keyboard control
+bash run.sh argus_base -p # without keyboard control
+
 ```
 
 🎮 Keyboard Controls  
@@ -74,7 +77,17 @@ All training command can be found in envs/[README.md](envs/README.md)
 ## BibTeX
 
 If you find our paper or codebase helpful, please consider citing:
-
+```
+@misc{xxx,
+      title={Extreme Symmetry Enables Omnidirectional and Multifunctional Robotics}, 
+      author={Jiaxun Liu and Boxi Xia and Boyuan Chen},
+      year={2025},
+      eprint={TODO},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/TODO}, 
+}
+```
 
 ## Acknowledgement
-`This work is supported by DARPA FoundSci program under award HR00112490372, DARPA TIAMAT program under award HR00112490419, ARO under award W911NF2410405, ARL STRONG program under awards W911NF2320182, W911NF2220113, and W911NF242021, and by gift supports from BMW.`
+This work is supported by DARPA FoundSci program under award HR00112490372, DARPA TIAMAT program under award HR00112490419, ARO under award W911NF2410405, ARL STRONG program under awards W911NF2320182, W911NF2220113, and W911NF242021, and by gift supports from BMW.
