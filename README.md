@@ -1,8 +1,7 @@
 # Extreme Symmetry Enables Omnidirectional and Multifunctional Robotics
 
 ### [Jiaxun Liu*](https://jiaxunliu.com), [Boxi Xia*](https://scholar.google.com/citations?user=TjA61pwAAAAJ), [Boyuan Chen](http://boyuanchen.com/) 
-Duke University    
-*Equal contribution
+Duke University, *Equal contribution
 
 ### [Project Website](http://generalroboticslab.com/Argus-v1) | [Paper](#TBD) | [Video](#TBD) 
 
