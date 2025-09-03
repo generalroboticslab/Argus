@@ -1,5 +1,15 @@
 # Extreme Symmetry Enables Omnidirectional and Multifunctional Robotics
-### [Project Website](http://generalroboticslab.com/Argus-v1)
+
+[Jiaxun Liu*](https://jiaxunliu.com),
+[Boxi Xia*](https://scholar.google.com/citations?user=TjA61pwAAAAJ),
+[Boyuan Chen](http://boyuanchen.com/)
+
+Duke University  
+\* Equal contribution
+
+### [Project Website](http://generalroboticslab.com/Argus-v1) | [Paper](#TBD) | [Video](#TBD) 
+
+
 
 ## Overview
 This repo includes the code for the Argus robot policy training in simulation.
