@@ -65,7 +65,7 @@ Object tracking demo
 ## Training Instructions
 All training command can be found in [envs/README.md](envs/README.md)
 
-# Blender rendering
+## Blender rendering
 
 Detailed instruction can be found in [blender_rendering/README.md](blender_rendering/README.md)
 <div align="left">
