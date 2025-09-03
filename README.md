@@ -6,8 +6,6 @@ Duke University
 
 ### [Project Website](http://generalroboticslab.com/Argus-v1) | [Paper](#TBD) | [Video](#TBD) 
 
-## Overview
-This repo includes the code for the Argus robot policy training in simulation.
 <div align="left">
     <img src="visualization/argus_video_wall.gif" width="800">
 </div>
