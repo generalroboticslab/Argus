@@ -14,7 +14,7 @@ Duke University
 ## Overview
 This repo includes the code for the Argus robot policy training in simulation.
 <div align="left">
-    <img src="visualization/argus_video_wall.gif" width="600">
+    <img src="visualization/argus_video_wall.gif" width="800">
 </div>
 
 ## Installation
@@ -57,7 +57,7 @@ Object pushing rendering:
 </div>
 
 ## Training Instructions
-All training command can be found in envs/[README.md](envs/README.md)
+All training command can be found in [envs/README.md](envs/README.md)
 
 
 ## Project structure
