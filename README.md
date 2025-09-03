@@ -54,11 +54,11 @@ Object pushing: `bash run.sh argus_object_pushing_IL -p` \
 Object tracking: `bash run.sh argus_object_tracking_IL -p` 
 
 Once setup and running you will see: \
-Object pushing demo:
+Object pushing demo
 <div align="left">
     <img src="visualization/object_pushing_demo.gif" width="800">
 </div>
-Object tracking demo:
+Object tracking demo
 <div align="left">
     <img src="visualization/object_tracking_demo.gif" width="800">
 </div>
