@@ -45,8 +45,15 @@ bash run.sh argus_base -p # without keyboard control
 - ⬆️ `i` → forward (+0.05m/s)  
 - ⬇️ `k` → backward (-0.05m/s)  
 - ⬅️ `j` → left (+0.05m/s)  
-- ➡️ `l` → right (-0.05m/s)  
----
+- ➡️ `l` → right (-0.05m/s) 
+
+
+Once setup and running you will see:
+<div align="left">
+    <img src="visualization/argus_base_demo.gif" width="800">
+</div>
+
+
 ### Object interaction
 Object pushing: `bash run.sh argus_object_pushing_IL -p` \
 Object tracking: `bash run.sh argus_object_tracking_IL -p` 
