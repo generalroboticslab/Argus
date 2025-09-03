@@ -4,7 +4,7 @@
 ## Overview
 This repo includes the code for the Argus robot policy training in simulation.
 <div align="left">
-    <img src="visualization/Argus_multi-functional.png" width="400">
+    <img src="visualization/argus_video_wall.gif" width="600">
 </div>
 
 ## Installation
