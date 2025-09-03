@@ -10,7 +10,6 @@ Duke University
 This repo includes the code for the Argus robot policy training in simulation.
 <div align="left">
     <img src="visualization/argus_video_wall.gif" width="800">
-    <img src="visualization/argus_video_wall.gif" width="800">
 </div>
 
 ## Installation
@@ -25,7 +24,6 @@ cd .. && git clone https://github.com/boxiXia/isaacgym.git && cd isaacgym/python
 ```
 
 ## Quick Start
-## Quick Start
 Run following checkpoint to check how Argus moves!
 ### Flat ground rolling
 
@@ -36,24 +34,12 @@ conda activate argus && export LD_LIBRARY_PATH=${CONDA_PREFIX}/lib
 bash run.sh argus_base -pk # with keyboard control
 bash run.sh argus_base -p # without keyboard control
 
-bash run.sh argus_base -pk # with keyboard control
-bash run.sh argus_base -p # without keyboard control
-
 ```
 
 🎮 Keyboard Controls  
 - ⬆️ `i` → forward (+0.05m/s)  
 - ⬇️ `k` → backward (-0.05m/s)  
 - ⬅️ `j` → left (+0.05m/s)  
-- ➡️ `l` → right (-0.05m/s) 
-
-
-Once setup and running you will see:
-<div align="left">
-    <img src="visualization/argus_base_demo.gif" width="800">
-</div>
-
-
 - ➡️ `l` → right (-0.05m/s) 
 
 
@@ -105,10 +91,9 @@ Detailed instruction can be found in [blender_rendering/README.md](blender_rende
 │   ├── run.sh / exp.sh    # Scripts for training & running experiments
 │   ├── ppo_isaacgym.py    # PPO algorithm (Isaac Gym backend)
 │   └── README.md          # Training instructions
-│   ├── ppo_isaacgym.py    # PPO algorithm (Isaac Gym backend)
-│   └── README.md          # Training instructions
 │
 ├── visualization/         # Images and demo videos
+├── blender_rendering/     # rendering instruction
 ├── requirements.txt       # Dependencies
 └── README.md
 ```
@@ -128,19 +113,6 @@ If you find our paper or codebase helpful, please consider citing:
       url={https://arxiv.org/abs/TODO}, 
 }
 ```
-```
-@misc{xxx,
-      title={Extreme Symmetry Enables Omnidirectional and Multifunctional Robotics}, 
-      author={Jiaxun Liu and Boxi Xia and Boyuan Chen},
-      year={2025},
-      eprint={TODO},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO},
-      url={https://arxiv.org/abs/TODO}, 
-}
-```
 
 ## Acknowledgement
-This work is supported by DARPA FoundSci program under award HR00112490372, DARPA TIAMAT program under award HR00112490419, ARO under award W911NF2410405, ARL STRONG program under awards W911NF2320182, W911NF2220113, and W911NF242021, and by gift supports from BMW.
-
 This work is supported by DARPA FoundSci program under award HR00112490372, DARPA TIAMAT program under award HR00112490419, ARO under award W911NF2410405, ARL STRONG program under awards W911NF2320182, W911NF2220113, and W911NF242021, and by gift supports from BMW.
