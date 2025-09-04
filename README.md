@@ -68,7 +68,7 @@ All training command can be found in [envs/README.md](envs/README.md)
 
 Detailed instruction can be found in [blender_rendering/README.md](blender_rendering/README.md)
 <div align="left">
-    <img src="visualization/object_pushing.gif" width="500">
+    <img src="visualization/blender_rendering.png" width="800">
 </div>
 
 ## Project structure
