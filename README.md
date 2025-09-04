@@ -42,7 +42,7 @@ bash run.sh argus_base -p # without keyboard control
 
 Once setup and running you will see:
 <div align="left">
-    <img src="visualization/argus_base_demo.gif" width="800">
+    <img src="visualization/argus_base_demo.gif" width="600">
 </div>
 
 
@@ -53,11 +53,11 @@ Object tracking: `bash run.sh argus_object_tracking_IL -p`
 Once setup and running you will see: \
 Object pushing demo
 <div align="left">
-    <img src="visualization/object_pushing_demo.gif" width="800">
+    <img src="visualization/object_pushing_demo.gif" width="600">
 </div>
 Object tracking demo
 <div align="left">
-    <img src="visualization/object_tracking_demo.gif" width="800">
+    <img src="visualization/object_tracking_demo.gif" width="600">
 </div>
 
 
@@ -68,7 +68,7 @@ All training command can be found in [envs/README.md](envs/README.md)
 
 Detailed instruction can be found in [blender_rendering/README.md](blender_rendering/README.md)
 <div align="left">
-    <img src="visualization/blender_rendering.png" width="800">
+    <img src="visualization/blender_rendering.png" width="600">
 </div>
 
 ## Project structure
