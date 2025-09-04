@@ -112,5 +112,9 @@ If you find our paper or codebase helpful, please consider citing:
 }
 ```
 
+## License
+
+This repository is released under the CC BY-NC-ND 4.0 License. Duke University has filed patent rights for the technology associated with this article. For further license rights, including using the patent rights for commercial purposes, please contact Duke's Office for Translation and Commercialization ([otcquestions@duke.edu](mailto:otcquestions@duke.edu)) and reference OTC DU8860PROV. See [LICENSE](https://github.com/generalroboticslab/Argus/blob/main/LICENSE-CC-BY-NC-ND-4.0.md) for additional details. 
+
 ## Acknowledgement
 This work is supported by DARPA FoundSci program under award HR00112490372, DARPA TIAMAT program under award HR00112490419, ARO under award W911NF2410405, ARL STRONG program under awards W911NF2320182, W911NF2220113, and W911NF242021, and by gift supports from BMW.
