@@ -2,7 +2,7 @@
 
 Please download the blender file from [here](https://drive.google.com/drive/folders/1OIzNFc4BLMO4p8IIS8wud3FVtw9b3A39?usp=sharing).
 
-## Design interface
+## The design interface
 
 <div align="left">
     <img src="../visualization/rendering_interface.png" width="800" style="height:auto;">
