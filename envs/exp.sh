@@ -231,7 +231,7 @@ argus_terrain(){
         task.env.dataPublisher.enable=False
         task.env.learn.episodeLength_s=15
         --num_envs=8
-        --checkpoint=../envs/runs/argus_debug/train/discrete_terrain_dof20_20250614_174701/discrete_terrain_dof20_newest.pt
+        --checkpoint=../assets/checkpoint/discrete_terrain/argus_terrain_dof_20.pt
     )
     BASE_ARGS+=(
         --wandb_run_name=discrete_terrain_dof20
