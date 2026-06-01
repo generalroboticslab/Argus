@@ -9,7 +9,7 @@ from gym import spaces
 from collections.abc import Iterable
 import orjson
 import torch.nn.functional as F
-from urdfpy import URDF
+import yourdfpy
 from isaacgym.torch_utils import get_axis_params, torch_rand_float, quat_rotate_inverse, quat_apply, normalize, quat_conjugate,quat_mul,scale
 from isaacgym import gymtorch
 from isaacgym import gymapi
@@ -1230,21 +1230,19 @@ class LeggedTerrain(VecTask):
         if self.perception_asymmetry_experiment:
             asymmetry_design = self.cfg["env"]["urdfAsset"]["asymmetry_design_asset"]
             self.asymmetry_design_path = os.path.join(cfg_asset["root"], asymmetry_design)
-            self.asymmetry_design = URDF.load(self.asymmetry_design_path)
-            # Get home positions in one line
-            fk_home = self.asymmetry_design.link_fk()
-
-            # Create a name-to-link mapping
-            link_dict = {link.name: link for link in self.asymmetry_design.links}
+            self.asymmetry_design = yourdfpy.URDF.load(self.asymmetry_design_path)
+            base_link = self.asymmetry_design.base_link
 
             # Extract both positions and orientations
             self.asymmetric_joint_positions = {}
             self.asymmetric_joint_orientations = {}
 
-            for joint in self.asymmetry_design.joints:
-                if joint.joint_type != 'fixed' and joint.child in link_dict and link_dict[joint.child] in fk_home:
-                    transform_matrix = fk_home[link_dict[joint.child]]  # 4x4 transformation matrix
-                    
+            for joint in self.asymmetry_design.joint_map.values():
+                if joint.type != 'fixed' and joint.child in self.asymmetry_design.link_map:
+                    # 4x4 home transform of the child link relative to the base link
+                    transform_matrix = self.asymmetry_design.get_transform(
+                        frame_to=joint.child, frame_from=base_link)
+
                     # Extract position (translation)
                     position = transform_matrix[:3, 3]
                     self.asymmetric_joint_positions[joint.name] = position

@@ -64,7 +64,7 @@ narwhals==1.29.1
 natsort==8.4.0
 nbformat==5.10.4
 nest-asyncio==1.6.0
-networkx==2.2
+networkx==3.1
 ninja==1.11.1.3
 noise==1.2.2
 numba==0.58.1
@@ -147,7 +147,6 @@ triton==3.0.0
 typeguard==4.4.0
 tyro==0.9.16
 tzdata==2025.1
-urdfpy==0.0.22
 urllib3==2.2.3
 wandb==0.12.21
 warp-lang==0.10.1

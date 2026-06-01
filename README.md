@@ -19,6 +19,20 @@ Symmetry is a central organizing principle in natural systems, yet its use as a 
 
 ## Installation
 
+### One-click
+
+From the repo root:
+```bash
+bash install.sh
+```
+This creates the `argus` conda env, installs `requirements.txt`, clones and
+installs the Isaac Gym fork + IsaacGymEnvs, and patches IsaacGymEnvs so it
+imports without `urdfpy`. It is idempotent — safe to re-run. Override defaults
+with env vars (`ENV_NAME`, `PY_VERSION`, `ISAACGYM_DIR`, `IGE_DIR`, ...); see the
+top of `install.sh`.
+
+### Manual
+
 **1. Create conda environment**
 ```bash
 conda create --name argus python=3.8
@@ -32,7 +46,26 @@ cd .. && git clone https://github.com/boxiXia/isaacgym.git
 cd isaacgym/python && pip install -e .
 ```
 
-> Note: This project requires a custom Isaac Gym fork. The official NVIDIA Isaac Gym release will not work.
+> Note: This project requires a custom Isaac Gym fork. The official NVIDIA Isaac Gym release will not work due to outdated dependencies.
+
+**3. Install IsaacGymEnvs (and patch it)**
+```bash
+cd ../.. && git clone https://github.com/isaac-sim/IsaacGymEnvs.git
+cd IsaacGymEnvs && pip install -e . --no-deps
+# Patch: make IsaacGymEnvs import without urdfpy (its IndustReal task pins an
+# ancient urdfpy/networkx that breaks on modern numpy; Argus doesn't use it).
+cd ../Argus/envs && python patch_isaacgymenvs.py
+```
+
+> Note: `--no-deps` keeps the versions already pinned in `requirements.txt`.
+
+### Verify (optional)
+
+Build a throwaway env and check a fresh install end-to-end (the GPU smoke needs the Isaac Gym fork + IsaacGymEnvs already cloned beside this repo):
+```bash
+bash test/test_fresh_env.sh          # deps-only checks (no GPU)
+FULL=1 bash test/test_fresh_env.sh   # + headless training smoke (GPU)
+```
 
 ## Quick Start
 
