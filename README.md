@@ -14,7 +14,7 @@ This dataset contains pretrained neural network policy checkpoints and robot des
 
 The policies were trained using Proximal Policy Optimization (PPO) in the Isaac Gym physics simulator (GPU-accelerated). Each policy takes a history of proprioceptive observations as input and outputs target positions for the robot's joints. Policies were trained and evaluated across six task categories: flat-ground locomotion, discrete terrain traversal, disabled-leg robustness, payload carrying, push rejection, and object interaction (pushing and tracking using point-cloud perception).
 
-All neural networks are multilayer perceptrons (MLPs). Actor networks have two hidden layers (256 units each) with ELU activations. A RunningMeanStd normalizer is applied to observations before the MLP. Critic networks (used only during training, not included in the ONNX exports) use a separate normalizer and the same two-hidden-layer MLP (256, 256 units) with a scalar output.
+All neural networks are multilayer perceptrons (MLPs). Actor networks have two hidden layers (256 units each) with ELU activations. A RunningMeanStd normalizer is applied to observations before the MLP. Critic networks (used only during training) use a separate normalizer and the same two-hidden-layer MLP (256, 256 units) with a scalar output.
 
 ---
 
@@ -29,9 +29,6 @@ Argus/
 │
 ├── assets/
 │   ├── checkpoint/                   Pretrained model weights (described in detail below)
-│   │   ├── argus_actor_dof12.onnx    ONNX actor policy — 12-leg variant
-│   │   ├── argus_actor_dof20.onnx    ONNX actor policy — 20-leg variant (physical robot)
-│   │   ├── argus_actor_dof32.onnx    ONNX actor policy — 32-leg variant
 │   │   ├── flat_plane.pt             PyTorch checkpoint — flat-ground locomotion (20-leg)
 │   │   ├── argus_disable_leg/        PyTorch checkpoints — disabled-leg robustness (all variants)
 │   │   ├── argus_carry_object/       PyTorch checkpoints — payload carrying (all variants)
@@ -73,60 +70,30 @@ Argus/
 │   └── regression_check.py          Regression tests for policy inference
 │
 ├── blender_rendering/                Blender visualization files (instructions at Google Drive link in Sharing section)
-└── visualization/                    Demo images and videos (GIF/MP4/PNG)
+└── visualization/                    Demo images and videos
+    ├── Argus.png                     Photo of the physical 20-leg Argus robot
+    ├── Argus_multi-functional.png    Overview figure showing all six task capabilities
+    ├── argus_base_demo.gif           Animated demo — flat-ground omnidirectional locomotion
+    ├── argus_video_wall.gif          Multi-panel animation — all tasks side by side
+    ├── argus_video_wall.mp4          Same as argus_video_wall.gif in MP4 format
+    ├── blender_rendering.png         Screenshot of the Blender rendering interface
+    ├── flat_ground_rolling.mp4       Video — flat-ground locomotion
+    ├── object_pushing.gif            Animated demo — object pushing task
+    ├── object_pushing_demo.gif       Alternate angle — object pushing
+    ├── object_pushing_demo.mp4       Same as object_pushing_demo.gif in MP4 format
+    ├── object_tracking_demo.gif      Animated demo — object tracking task
+    ├── object_tracking_demo.mp4      Same as object_tracking_demo.gif in MP4 format
+    ├── play_the_animation.png        Screenshot — Blender play button location
+    ├── rendering_interface.png       Screenshot — Blender full rendering interface
+    ├── turn_on_rendering_1.png       Screenshot — Blender viewport shading step 1
+    └── turn_on_rendering_2.png       Screenshot — Blender viewport shading step 2
 ```
 
 ---
 
 ## File Descriptions and Data Dictionary
 
-### 1. ONNX Actor Policy Files (`assets/checkpoint/argus_actor_dof*.onnx`)
-
-These three files are the primary deliverable of this dataset. Each is a self-contained, deployment-ready neural network locomotion policy exported in the Open Neural Network Exchange (ONNX) format (opset version 17). The 20-leg file is the flat-ground policy; the 12-leg and 32-leg files are exported from disabled-leg robustness checkpoints (which also generalize to flat-ground locomotion). ONNX is an open standard readable by many inference engines (e.g., ONNX Runtime, TensorFlow, PyTorch) without requiring Isaac Gym or any robotics simulation software.
-
-Each file encodes an **actor-only** network consisting of:
-1. An observation normalizer (RunningMeanStd): applies learned per-dimension mean subtraction and variance scaling to raw observations, then clips to the range [−5, 5].
-2. An MLP policy: two hidden layers (256 units each) with ELU activations, producing a deterministic action (the mean of the policy's action distribution).
-
-| File | Variant | Source checkpoint | Input Dimension | Output Dimension | File Size |
-|---|---|---|---|---|---|
-| `argus_actor_dof12.onnx` | 12-leg | `argus_disable_leg/argus_disable_leg_dof_12_const_vel.pt` | 150 | 12 | ~423 KB |
-| `argus_actor_dof20.onnx` | 20-leg | `flat_plane.pt` | 222 | 20 | ~504 KB |
-| `argus_actor_dof32.onnx` | 32-leg | `argus_disable_leg/argus_disable_leg_dof_32_const_vel.pt` | 330 | 32 | ~624 KB |
-
-#### Input Variable: `obs` (float32 tensor, shape: [batch\_size, obs\_dim])
-
-The input is a stacked history of 3 consecutive observation frames (the most recent frame and 2 prior frames), concatenated in chronological order (oldest first). Each frame has dimension 14 + 3N, where N is the number of legs (degrees of freedom, DOF). The overall input dimension is therefore 3 × (14 + 3N).
-
-**Per-frame observation layout** (N = number of legs/DOF):
-
-All values entering the observation vector are pre-multiplied by a scale factor defined in `envs/cfg/task/argus.yaml` under `learn`. The ONNX model expects these **pre-scaled** values as input; raw sensor readings must be converted using the scale factors in the table below.
-
-| Index range | Variable name | Size | Raw physical unit | Scale factor | Description |
-|---|---|---|---|---|---|
-| 0 – 2 | `worldSpaceAngularVelocity` | 3 | rad/s | 0.25 | Angular velocity of the robot body in the world (global) frame, multiplied by 0.25. Components are [ω\_x, ω\_y, ω\_z] (roll rate, pitch rate, yaw rate). To convert: obs\_value = raw\_rad\_per\_s × 0.25. |
-| 3 – 4 | `commands_xy` | 2 | m/s | 2.0 | Target linear velocity command in the horizontal (x–y) plane, multiplied by 2.0. [v\_x, v\_y] where x is forward and y is lateral (left). To convert: obs\_value = raw\_m\_per\_s × 2.0. |
-| 5 – (4+N) | `dofPosition` | N | rad | 1.0 | Current joint position of each leg actuator (scale factor = 1.0, so values are in radians). Index order follows the URDF joint ordering. |
-| (5+N) – (4+2N) | `dofVelocity` | N | rad/s | 0.05 | Current joint velocity of each leg actuator, multiplied by 0.05. To convert: obs\_value = raw\_rad\_per\_s × 0.05. |
-| (5+2N) – (4+3N) | `actions` | N | unitless | 1.0 | The action vector output by the policy at the previous time step. Values are in the normalized action space (approximately [−1, 1]). Used to give the network awareness of its own recent command history. |
-| (5+3N) – (13+3N) | `base_rotation_matrix_filtered` | 9 | unitless | 1.0 | Orientation of the robot body as a flattened 3×3 rotation matrix (row-major), low-pass filtered to reduce IMU noise. Entries are dimensionless direction cosines. Column vectors are the body x-, y-, and z-axes in world frame. |
-
-**Single frame size by variant:**
-- 12-leg: 14 + 3(12) = 50 values per frame; 3 frames → input dimension 150
-- 20-leg: 14 + 3(20) = 74 values per frame; 3 frames → input dimension 222
-- 32-leg: 14 + 3(32) = 110 values per frame; 3 frames → input dimension 330
-
-#### Output Variable: `action` (float32 tensor, shape: [batch\_size, N\_dof])
-
-The output is a vector of N target joint positions (one per leg), in normalized units. To convert to a physical joint position target: target\_rad = 0.25 × action + default\_joint\_pos, where 0.25 rad is the action scale (`actionScale` in `argus.yaml`) and `default_joint_pos` is the resting joint angle. The network is called at a fixed control frequency of 50 Hz (sim dt = 0.005 s, decimation = 4).
-
-| Index | Variable | Units | Description |
-|---|---|---|---|
-| 0 – (N−1) | target joint position | unitless (normalized) | Desired position for each joint. Multiply by action scale (0.25 rad) and add the default joint position to get the physical target in radians: target\_rad = 0.25 × action + default\_joint\_pos. Index order matches `dofPosition` in the input. |
-
----
-
-### 2. PyTorch Checkpoint Files (`assets/checkpoint/**/*.pt`)
+### 1. PyTorch Checkpoint Files (`assets/checkpoint/**/*.pt`)
 
 These files are full training checkpoints saved in PyTorch's serialized format (`torch.save`). They include the complete model state (actor + critic networks, observation normalizers, optimizer state) and are used to resume training or run evaluation in Isaac Gym. Each file is a Python dictionary with the following top-level key:
 
@@ -163,7 +130,7 @@ The critic receives a privileged state vector not available on the physical robo
 
 | File path | Variant | Task | Notes |
 |---|---|---|---|
-| `flat_plane.pt` | 20-leg | Flat-ground locomotion | Primary flat-ground policy; also base for ONNX export |
+| `flat_plane.pt` | 20-leg | Flat-ground locomotion | Primary flat-ground policy |
 | `argus_disable_leg/argus_disable_leg_dof_12_const_vel.pt` | 12-leg | Disabled-leg robustness | Trained to locomote with randomly disabled legs at constant velocity command |
 | `argus_disable_leg/argus_disable_leg_dof_20_const_vel.pt` | 20-leg | Disabled-leg robustness | |
 | `argus_disable_leg/argus_disable_leg_dof_32_const_vel.pt` | 32-leg | Disabled-leg robustness | |
@@ -190,7 +157,7 @@ The critic receives a privileged state vector not available on the physical robo
 
 ---
 
-### 3. Robot Description Files (`assets/urdf/argus/`)
+### 2. Robot Description Files (`assets/urdf/argus/`)
 
 These files describe the physical properties of the Argus robot in the Unified Robot Description Format (URDF), an XML-based standard used by robotics simulators.
 
@@ -238,7 +205,7 @@ These files describe the physical properties of the Argus robot in the Unified R
 
 ---
 
-### 4. Source Code Files (`envs/`)
+### 3. Source Code Files (`envs/`)
 
 All source code is written in Python (tested on Python 3.8). The files define the simulation environment, training loop, and evaluation logic. No standalone tabular data files (CSV, HDF5, etc.) are produced by training; outputs are PyTorch checkpoint files (`.pt`) and evaluation JSON files written to `envs/eval/`.
 
@@ -261,7 +228,7 @@ All source code is written in Python (tested on Python 3.8). The files define th
 
 ---
 
-### 5. Evaluation Output Format (`envs/eval/*.json`)
+### 4. Evaluation Output Format (`envs/eval/*.json`)
 
 Running an evaluation command (e.g., `bash run.sh argus_base_eval -p`) writes a JSON file to `envs/eval/`. Each JSON file contains a dictionary with the following keys (all values are averages over the evaluation episode):
 
@@ -277,6 +244,33 @@ Running an evaluation command (e.g., `bash run.sh argus_base_eval -p`) writes a 
 
 ---
 
+### 5. Visualization Files (`visualization/`)
+
+Demo media used in the paper and project website. All files are static (no code required to view).
+
+| File | Format | Description |
+|---|---|---|
+| `Argus.png` | PNG | Photo of the physical 20-leg Argus robot |
+| `Argus_multi-functional.png` | PNG | Overview figure showing all six task capabilities |
+| `argus_base_demo.gif` | GIF | Flat-ground omnidirectional locomotion demo |
+| `argus_video_wall.gif` | GIF | Multi-panel animation showing all tasks side by side |
+| `argus_video_wall.mp4` | MP4 | Same as argus_video_wall.gif in video format |
+| `blender_rendering.png` | PNG | Screenshot of the Blender rendering interface |
+| `flat_ground_rolling.mp4` | MP4 | Flat-ground locomotion video |
+| `object_pushing.gif` | GIF | Object pushing task demo |
+| `object_pushing_demo.gif` | GIF | Object pushing — alternate camera angle |
+| `object_pushing_demo.mp4` | MP4 | Same as object_pushing_demo.gif in video format |
+| `object_tracking_demo.gif` | GIF | Object tracking task demo |
+| `object_tracking_demo.mp4` | MP4 | Same as object_tracking_demo.gif in video format |
+| `play_the_animation.png` | PNG | Blender tutorial screenshot — play button location |
+| `rendering_interface.png` | PNG | Blender tutorial screenshot — full rendering interface |
+| `turn_on_rendering_1.png` | PNG | Blender tutorial screenshot — viewport shading step 1 |
+| `turn_on_rendering_2.png` | PNG | Blender tutorial screenshot — viewport shading step 2 |
+
+GIF and MP4 pairs show identical content; the GIF is for inline preview and the MP4 for higher-quality playback. PNG and GIF files can be opened with any standard image/media viewer. MP4 files require a video player (e.g., VLC, which is free and open-source).
+
+---
+
 ## Sharing/Access Information
 
 - **License:** [CC0 1.0 Universal (Public Domain Dedication)](https://creativecommons.org/publicdomain/zero/1.0/) — data and model weights are dedicated to the public domain with no restrictions on use, distribution, or adaptation.
@@ -289,17 +283,15 @@ Running an evaluation command (e.g., `bash run.sh argus_base_eval -p`) writes a 
 
 ## Code/Software
 
-All executable commands (installation, training, evaluation, and ONNX export) are provided in the separate script file `usage_guide.sh` (plain text, readable in any text editor). The file is organized into numbered sections and is not meant to be executed as a whole; individual commands should be copied and run as needed.
+All executable commands (installation, training, and evaluation) are provided in the separate script file `usage_guide.sh` (plain text, readable in any text editor). The file is organized into numbered sections and is not meant to be executed as a whole; individual commands should be copied and run as needed.
 
 **Software requirements:**
 - Operating system: Linux (tested on Ubuntu 20.04 and 22.04)
 - Python: 3.8 (required by Isaac Gym)
-- CUDA: 12.x (GPU with ≥ 16 GB VRAM recommended for training; inference with ONNX Runtime requires no GPU)
+- CUDA: 12.x (GPU with ≥ 16 GB VRAM recommended for training)
 - Conda: Miniconda or Anaconda (for environment management)
 - Isaac Gym: custom fork at https://github.com/boxiXia/isaacgym (the official NVIDIA release is not compatible due to dependency version conflicts)
 - IsaacGymEnvs: https://github.com/isaac-sim/IsaacGymEnvs (with compatibility patch applied by `envs/patch_isaacgymenvs.py`)
-- Key Python packages (see `requirements.txt` for pinned versions): torch, onnx, onnxruntime, hydra-core, wandb, numpy
+- Key Python packages (see `requirements.txt` for pinned versions): torch, hydra-core, wandb, numpy
 
 **Working directory:** All commands in `usage_guide.sh` that reference relative paths assume the working directory is `envs/` unless otherwise noted.
-
-**ONNX inference (no Isaac Gym required):** The three `.onnx` files can be run with ONNX Runtime alone. A minimal Python usage example is included in `usage_guide.sh` (Section 5).
